@@ -3,13 +3,11 @@ import { SxProps } from "@mui/material";
 export interface LogoStyles {
   container: SxProps;
   icon: SxProps;
-  h1: SxProps;
 }
 
 interface SignUpStyles {
   container: SxProps;
   logo: LogoStyles;
-  h2: SxProps;
   form: SxProps;
   input: SxProps;
   button: SxProps;
@@ -37,14 +35,6 @@ const styles: SignUpStyles = {
     icon: {
       fontSize: "50px",
     },
-    h1: {
-      fontSize: "40px",
-      fontWeight: "700",
-    },
-  },
-  h2: {
-    fontSize: "28px",
-    fontWeight: "500",
   },
   form: {
     width: "100%",

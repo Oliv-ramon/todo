@@ -12,11 +12,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import Input from "../../components/Input";
-import api from "../../services/api";
-import styles from "./style";
-import { AccountCircle } from "@mui/icons-material";
 import Logo from "../../components/Logo";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
+import styles from "./style";
+import api from "../../services/api";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -63,17 +62,10 @@ export default function SignUp() {
   return (
     <Box sx={styles.container}>
       <Logo sx={styles.logo} />
-      <Typography component="h2" sx={styles.h2}>
+      <Typography variant="h2" component="h2">
         Cadastro
       </Typography>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ width: "100%" }}>
         <GoogleLoginButton />
         <Divider sx={{ width: "100%", py: "15px" }}>ou</Divider>
       </Box>
@@ -95,7 +87,7 @@ export default function SignUp() {
           type="text"
           sx={styles.input}
           onChange={handleChange}
-          Icon={AccountCircle}
+          Icon={AccountCircleIcon}
         />
         <PasswordInput
           name="password"

@@ -11,7 +11,7 @@ export default function Logo({ sx: style }: LogoProps) {
   return (
     <Box sx={style.container}>
       <CheckCircleRoundedIcon color="primary" sx={style.icon} />
-      <Typography component="h1" sx={style.h1}>
+      <Typography variant="h1" component="h1">
         TodoIt
       </Typography>
     </Box>

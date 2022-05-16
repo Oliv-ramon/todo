@@ -1,31 +1,33 @@
-import { ReactComponent as GoogleIcon } from "../../assets/icons8-google.svg";
-import { Button, Typography } from "@mui/material";
+import { FcGoogle as GoogleIcon } from "react-icons/fc";
+import { Button, SxProps, Typography } from "@mui/material";
 
 export default function GoogleLoginButton() {
   return (
-    <Button
-      variant="outlined"
-      sx={{
-        height: "38px",
-        width: "100%",
-        mt: "30px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <GoogleIcon style={{ width: "28px" }} />
-      <Typography
-        sx={{
-          fontSize: "14px",
-          color: "white",
-          fontWeight: "500",
-          justifySelf: "center",
-        }}
-      >
-        Entrar com conta Google
-      </Typography>
-      <GoogleIcon style={{ width: "28px", opacity: "0" }} />
+    <Button variant="outlined" sx={style.button}>
+      <GoogleIcon style={{ fontSize: "28px" }} />
+      <Typography sx={style.span}>Entrar com conta Google</Typography>
+      <GoogleIcon style={{ fontSize: "28px", opacity: "0" }} />
     </Button>
   );
 }
+
+interface GoogleLoginButtonStyle {
+  button: SxProps;
+  span: SxProps;
+}
+
+const style: GoogleLoginButtonStyle = {
+  button: {
+    height: "38px",
+    width: "100%",
+    mt: "30px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  span: {
+    fontSize: "14px",
+    color: "white",
+    fontWeight: "500",
+  },
+};

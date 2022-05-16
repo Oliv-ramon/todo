@@ -15,13 +15,26 @@ function App() {
     shape: { borderRadius: 10 },
     typography: {
       fontFamily: "Commissioner, sans-serif",
+      h1: {
+        fontSize: "40px",
+        fontWeight: "700",
+      },
       h2: {
-        fontSize: "48px",
+        fontSize: "28px",
+        fontWeight: "500",
+      },
+      h3: {
+        fontSize: "15px",
+        fontWeight: "500",
+        color: "#fff",
       },
     },
     components: {
       MuiOutlinedInput: {
         styleOverrides: {
+          root: {
+            width: "100%",
+          },
           notchedOutline: {
             borderColor: "#333",
           },
@@ -32,13 +45,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<SignUp />} />
-          </Routes>
-        </BrowserRouter>
-      </CssBaseline>
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
