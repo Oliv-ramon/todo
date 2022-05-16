@@ -1,35 +1,69 @@
 import { SxProps } from "@mui/material";
 
+export interface LogoStyles {
+  container: SxProps;
+  icon: SxProps;
+  h1: SxProps;
+}
+
 interface SignUpStyles {
   container: SxProps;
+  logo: LogoStyles;
+  h2: SxProps;
   form: SxProps;
   input: SxProps;
   button: SxProps;
-} 
+}
 
 const styles: SignUpStyles = {
   container: {
     minHeight: "100vh",
+    padding: "80px 40px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", 
-    justifyContent: "center"
+    alignItems: "center",
+    justifyContent: "flex-start",
+    background:
+      "linear-gradient(rgba(11,70,1,1) 0%, rgba(9,45,1,1) 12%, rgba(6,28,1,1) 25%, rgba(1,8,1,1) 60%, rgba(0,5,0,1) 100%);",
+  },
+  logo: {
+    container: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: "60px",
+      gap: "10px",
+    },
+    icon: {
+      fontSize: "50px",
+    },
+    h1: {
+      fontSize: "40px",
+      fontWeight: "700",
+    },
+  },
+  h2: {
+    fontSize: "28px",
+    fontWeight: "500",
   },
   form: {
     width: "100%",
-    px: "20px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", 
+    alignItems: "center",
     justifyContent: "center",
-    gap: "10px"
+    gap: "10px",
+    fontFamily: "Commissioner",
   },
   input: {
-    width: "100%"
+    width: "100%",
   },
   button: {
-    width: "100%"
-  }
-}
+    width: "100%",
+    my: "20px",
+    fontSize: "16px",
+    color: "#fff",
+  },
+};
 
 export default styles;

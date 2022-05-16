@@ -6,8 +6,27 @@ import SignUp from "./pages/SignUp";
 function App() {
   const theme = createTheme({
     palette: {
-      secondary: { main: "#424445" },
-      background: { default: "#FAFAFA", paper: "#FAFAFA" },
+      primary: { main: "#1caf1c" },
+      secondary: { main: "#292E3C" },
+      text: { primary: "#fff" },
+      action: { active: "#fff" },
+      divider: "#333",
+    },
+    shape: { borderRadius: 10 },
+    typography: {
+      fontFamily: "Commissioner, sans-serif",
+      h2: {
+        fontSize: "48px",
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: "#333",
+          },
+        },
+      },
     },
   });
 
