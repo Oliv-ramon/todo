@@ -16,6 +16,8 @@ import Logo from "../../components/Logo";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
 import styles from "./style";
 import api from "../../services/api";
+import useAlert from "../../hooks/useAlert";
+import Alert from "../../components/Alert";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -25,8 +27,9 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
   });
-
-  const showPassword = true;
+  const [loading, setLoading] = useState(false);
+  const { setMessage } = useAlert();
+  const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,32 +38,47 @@ export default function SignUp() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    setLoading(true);
     const { name, email, password, confirmPassword } = formData;
 
     if (!name || !email || !password || !confirmPassword) {
-      console.log("Todos os campos precisam ser preenchidos");
-      return;
+      setMessage({
+        text: "Todos os campos precisam ser preenchidos",
+        type: "error",
+      });
+      return setLoading(false);
     }
 
     if (password !== confirmPassword) {
-      console.log("As senhas precisam coincidir");
-      return;
+      setMessage({
+        text: "As senhas precisam coincidir",
+        type: "error",
+      });
+      return setLoading(false);
     }
 
     try {
       await api.signUp({ name, email, password });
-      console.log("Usuário cadastrado com sucesso");
+      setLoading(false);
+      setMessage({
+        text: "Usuário cadastrado com sucesso",
+        type: "error",
+      });
       navigate("/login");
     } catch (error: Error | AxiosError | any) {
       if (error.response) {
-        console.log("Erro ao cadastrar, por favor, tente novamente");
-        return;
+        setMessage({
+          type: "error",
+          text: "Erro ao cadastrar, por favor tente novamente",
+        });
+        return setLoading(false);
       }
     }
   }
 
   return (
     <Box sx={styles.container}>
+      <Alert />
       <Logo sx={styles.logo} />
       <Typography variant="h2" component="h2">
         Cadastro
@@ -103,7 +121,12 @@ export default function SignUp() {
           onChange={handleChange}
           value={formData.confirmPassword}
         />
-        <Button variant="contained" sx={styles.button} type="submit">
+        <Button
+          disabled={haveEmptyFields || loading}
+          variant="contained"
+          sx={styles.button}
+          type="submit"
+        >
           <Typography sx={{ fontWeight: "bold" }}>Cadastrar</Typography>
         </Button>
       </Box>
