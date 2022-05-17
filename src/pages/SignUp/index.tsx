@@ -1,5 +1,4 @@
 import EmailIcon from "@mui/icons-material/Email";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   Box,
   Button,
@@ -22,7 +21,6 @@ import Alert from "../../components/Alert";
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -39,9 +37,9 @@ export default function SignUp() {
     e.preventDefault();
 
     setLoading(true);
-    const { name, email, password, confirmPassword } = formData;
+    const { email, password, confirmPassword } = formData;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword) {
       setMessage({
         text: "Todos os campos precisam ser preenchidos.",
         type: "error",
@@ -58,7 +56,7 @@ export default function SignUp() {
     }
 
     try {
-      await api.signUp({ name, email, password });
+      await api.signUp({ email, password });
       setLoading(false);
       setMessage({
         text: "Usuário cadastrado com sucesso!",
@@ -98,15 +96,6 @@ export default function SignUp() {
           onChange={handleChange}
           Icon={EmailIcon}
         />
-        <Input
-          name="name"
-          placeholder="Nome"
-          value={formData.name}
-          type="text"
-          sx={styles.input}
-          onChange={handleChange}
-          Icon={AccountCircleIcon}
-        />
         <PasswordInput
           name="password"
           sx={styles.input}
@@ -127,7 +116,9 @@ export default function SignUp() {
           sx={styles.button}
           type="submit"
         >
-          <Typography sx={{ fontWeight: "bold" }}>Cadastrar</Typography>
+          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+            Cadastrar
+          </Typography>
         </Button>
       </Box>
       <Typography sx={{ fontWeight: "500" }}>

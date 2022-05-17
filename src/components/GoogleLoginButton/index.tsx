@@ -5,7 +5,7 @@ export default function GoogleLoginButton() {
   return (
     <Button variant="outlined" sx={style.button}>
       <GoogleIcon style={{ fontSize: "28px" }} />
-      <Typography sx={style.span}>Entrar com conta Google</Typography>
+      <Typography variant="h3">Entrar com conta Google</Typography>
       <GoogleIcon style={{ fontSize: "28px", opacity: "0" }} />
     </Button>
   );
@@ -13,7 +13,6 @@ export default function GoogleLoginButton() {
 
 interface GoogleLoginButtonStyle {
   button: SxProps;
-  span: SxProps;
 }
 
 const style: GoogleLoginButtonStyle = {
@@ -24,10 +23,5 @@ const style: GoogleLoginButtonStyle = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  span: {
-    fontSize: "14px",
-    color: "white",
-    fontWeight: "500",
   },
 };

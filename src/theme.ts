@@ -16,20 +16,23 @@ const theme = createTheme({
   typography: {
     fontFamily: "Commissioner, sans-serif",
     h1: {
-      fontSize: "40px",
+      fontSize: "35px",
       fontWeight: "700",
     },
     h2: {
-      fontSize: "28px",
+      fontSize: "24px",
       fontWeight: "500",
     },
     h3: {
-      fontSize: "15px",
+      fontSize: "12px",
       fontWeight: "500",
       color: "#fff",
     },
   },
   components: {
+    MuiFormControl: {
+      styleOverrides: {},
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: {

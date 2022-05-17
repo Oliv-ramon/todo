@@ -13,7 +13,6 @@ describe("Sign-up/Sign-in tests", () => {
     cy.visit(appUrl);
 
     cy.get("input[placeholder=Email]").type(userData.email);
-    cy.get("input[placeholder=Nome]").type(userData.name);
     cy.get("input[placeholder=Senha]").type(userData.password);
     cy.get("input[placeholder='Confirme sua senha']").type(userData.password);
 
@@ -28,6 +27,5 @@ describe("Sign-up/Sign-in tests", () => {
 });
 
 function truncateUsers() {
-  const apiUrl = "http://localhost:5000";
-  cy.request("POST", apiUrl, {});
+  cy.request("POST", "http://localhost:5000/e2e/truncate", {});
 }

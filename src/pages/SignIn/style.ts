@@ -16,7 +16,7 @@ interface SignUpStyles {
 const styles: SignUpStyles = {
   container: {
     minHeight: "100vh",
-    padding: "80px 40px",
+    padding: "60px 40px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -29,7 +29,7 @@ const styles: SignUpStyles = {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      marginBottom: "60px",
+      marginBottom: "50px",
       gap: "10px",
     },
     icon: {
