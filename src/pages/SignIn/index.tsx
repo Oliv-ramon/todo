@@ -19,7 +19,7 @@ import api from "../../services/api";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../../components/Alert";
 
-export default function SignUp() {
+export default function SignIn() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
