@@ -62,7 +62,7 @@ export default function SignUp() {
       setLoading(false);
       setMessage({
         text: "Usuário cadastrado com sucesso",
-        type: "error",
+        type: "success",
       });
       navigate("/login");
     } catch (error: Error | AxiosError | any) {
