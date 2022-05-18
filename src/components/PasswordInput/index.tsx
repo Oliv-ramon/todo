@@ -50,7 +50,6 @@ function PasswordInput({
         onFocus={toggleIconColor}
         onBlur={toggleIconColor}
         placeholder={placeholder}
-        autoComplete="off"
         startAdornment={
           <InputAdornment position="start">
             <IconButton sx={{ p: 0 }}>
@@ -67,9 +66,9 @@ function PasswordInput({
               sx={{ p: 0 }}
             >
               {showPassword ? (
-                <VisibilityOff color={iconColor} />
-              ) : (
                 <Visibility color={iconColor} />
+              ) : (
+                <VisibilityOff color={iconColor} />
               )}
             </IconButton>
           </InputAdornment>

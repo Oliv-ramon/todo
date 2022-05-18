@@ -24,7 +24,7 @@ const theme = createTheme({
       fontWeight: "500",
     },
     h3: {
-      fontSize: "12px",
+      fontSize: "14px",
       fontWeight: "500",
       color: "#fff",
     },
@@ -34,6 +34,9 @@ const theme = createTheme({
       styleOverrides: {},
     },
     MuiOutlinedInput: {
+      defaultProps: {
+        autoComplete: "off",
+      },
       styleOverrides: {
         notchedOutline: {
           borderColor: "#333",
