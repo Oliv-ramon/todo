@@ -11,11 +11,16 @@ interface UserData {
 }
 
 async function signUp(userData: UserData) {
-  await baseApi.post("/users", userData);
+  return baseApi.post("/users", userData);
+}
+
+async function signIn(userData: UserData) {
+  return baseApi.post("/users/login", userData);
 }
 
 const api = {
   signUp,
+  signIn,
 };
 
 export default api;

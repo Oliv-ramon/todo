@@ -1,4 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   Box,
   Button,
@@ -17,15 +18,17 @@ import styles from "./style";
 import api from "../../services/api";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../../components/Alert";
+import { mapSignUpErrorMessages } from "../../utils/alertUtils";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { setMessage } = useAlert();
   const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
@@ -37,15 +40,7 @@ export default function SignUp() {
     e.preventDefault();
 
     setLoading(true);
-    const { email, password, confirmPassword } = formData;
-
-    if (!email || !password || !confirmPassword) {
-      setMessage({
-        text: "Todos os campos precisam ser preenchidos.",
-        type: "error",
-      });
-      return setLoading(false);
-    }
+    const { name, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
       setMessage({
@@ -56,7 +51,7 @@ export default function SignUp() {
     }
 
     try {
-      await api.signUp({ email, password });
+      await api.signUp({ name, email, password });
       setLoading(false);
       setMessage({
         text: "Usuário cadastrado com sucesso!",
@@ -65,9 +60,10 @@ export default function SignUp() {
       navigate("/login");
     } catch (error: Error | AxiosError | any) {
       if (error.response) {
+        const errorMessage = mapSignUpErrorMessages(error.code);
         setMessage({
           type: "error",
-          text: "Erro ao cadastrar, por favor tente novamente.",
+          text: errorMessage,
         });
         return setLoading(false);
       }
@@ -87,6 +83,15 @@ export default function SignUp() {
       </Box>
 
       <Box component="form" sx={styles.form} onSubmit={handleSubmit}>
+        <Input
+          name="name"
+          placeholder="Nome"
+          value={formData.name}
+          type="text"
+          sx={styles.input}
+          onChange={handleChange}
+          Icon={AccountCircleIcon}
+        />
         <Input
           name="email"
           placeholder="Email"

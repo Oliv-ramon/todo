@@ -5,13 +5,14 @@ import userDataFactory from "../factories/userDataFactory";
 describe("Sign-up/Sign-in tests", () => {
   beforeEach(truncateUsers);
 
+  const appUrl = "http://localhost:3000";
+
   it("should sign-up given valids inputs", () => {
     const userData = userDataFactory();
 
-    const appUrl = "http://localhost:3000";
-
     cy.visit(appUrl);
 
+    cy.get("input[placeholder=Nome]").type(userData.name);
     cy.get("input[placeholder=Email]").type(userData.email);
     cy.get("input[placeholder=Senha]").type(userData.password);
     cy.get("input[placeholder='Confirme sua senha']").type(userData.password);
@@ -23,6 +24,23 @@ describe("Sign-up/Sign-in tests", () => {
     cy.wait("@createUser").then(() => {});
     cy.contains("Usuário cadastrado com sucesso!");
     cy.url().should("equal", `${appUrl}/login`);
+  });
+
+  it("should sign-in given valid credentials", () => {
+    const userData = userDataFactory();
+    cy.request("POST", "http://localhost:5000/users", userData);
+
+    cy.visit(`${appUrl}/login`);
+
+    cy.get("input[placeholder=Email]").type(userData.email);
+    cy.get("input[placeholder=Senha]").type(userData.password);
+
+    cy.intercept("POST", "/users/login").as("login");
+
+    cy.get("button[type=submit]").click();
+
+    cy.wait("@login").then(() => {});
+    cy.url().should("equal", `${appUrl}/app`);
   });
 });
 
