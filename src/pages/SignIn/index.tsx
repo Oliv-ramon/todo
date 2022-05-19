@@ -51,7 +51,6 @@ export default function SignIn() {
 
     try {
       const { data: auth } = await api.signIn(formData);
-      console.log(auth);
       login(auth);
       setLoading(false);
       navigate("/app");
