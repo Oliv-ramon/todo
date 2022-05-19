@@ -13,20 +13,22 @@ import PasswordInput from "../../components/PasswordInput";
 import Input from "../../components/Input";
 import Logo from "../../components/Logo";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-import styles from "./style";
+import styles from "../SignUp/style";
 import api from "../../services/api";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../../components/Alert";
+import { mapLoginErrorMessages } from "../../utils/alertUtils";
+import useAuth from "../../hooks/useAuth";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
   const { setMessage } = useAlert();
+  const { login } = useAuth();
   const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -37,9 +39,9 @@ export default function SignIn() {
     e.preventDefault();
 
     setLoading(true);
-    const { email, password, confirmPassword } = formData;
+    const { email, password } = formData;
 
-    if (!email || !password || !confirmPassword) {
+    if (!email || !password) {
       setMessage({
         text: "Todos os campos precisam ser preenchidos.",
         type: "error",
@@ -47,27 +49,18 @@ export default function SignIn() {
       return setLoading(false);
     }
 
-    if (password !== confirmPassword) {
-      setMessage({
-        text: "As senhas precisam coincidir.",
-        type: "error",
-      });
-      return setLoading(false);
-    }
-
     try {
-      await api.signUp({ email, password });
+      const { data: auth } = await api.signIn(formData);
+      console.log(auth);
+      login(auth);
       setLoading(false);
-      setMessage({
-        text: "Usuário cadastrado com sucesso!",
-        type: "success",
-      });
-      navigate("/login");
+      navigate("/app");
     } catch (error: Error | AxiosError | any) {
       if (error.response) {
+        const errorMessage = mapLoginErrorMessages(error.code);
         setMessage({
           type: "error",
-          text: "Erro ao cadastrar, por favor tente novamente.",
+          text: errorMessage,
         });
         return setLoading(false);
       }
@@ -79,7 +72,7 @@ export default function SignIn() {
       <Alert />
       <Logo sx={styles.logo} />
       <Typography variant="h2" component="h2">
-        Cadastro
+        Login
       </Typography>
       <Box sx={{ width: "100%" }}>
         <GoogleLoginButton />
@@ -103,13 +96,6 @@ export default function SignIn() {
           onChange={handleChange}
           value={formData.password}
         />
-        <PasswordInput
-          name="confirmPassword"
-          sx={styles.input}
-          placeholder="Confirme sua senha"
-          onChange={handleChange}
-          value={formData.confirmPassword}
-        />
         <Button
           disabled={haveEmptyFields || loading}
           variant="contained"
@@ -117,14 +103,14 @@ export default function SignIn() {
           type="submit"
         >
           <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-            Cadastrar
+            Entrar
           </Typography>
         </Button>
       </Box>
-      <Typography sx={{ fontWeight: "500" }}>
-        Já possui cadastro?
-        <StyledLink component={Link} to="login" sx={{ ml: "5px" }}>
-          Login
+      <Typography sx={{ fontWeight: "500", textAlign: "center" }}>
+        Ainda não possui cadastro?
+        <StyledLink component={Link} to="/" sx={{ ml: "5px" }}>
+          Cadastre-se
         </StyledLink>
       </Typography>
     </Box>
