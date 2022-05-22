@@ -1,0 +1,13 @@
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    rgba(11, 70, 1, 1) 0%,
+    rgba(9, 45, 1, 1) 12%,
+    rgba(6, 28, 1, 1) 25%,
+    rgba(1, 8, 1, 1) 60%,
+    rgba(0, 5, 0, 1) 100%
+  );
+}
+::-webkit-scrollbar {
+  display: "none";
+}

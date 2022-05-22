@@ -48,6 +48,13 @@ const theme = createTheme({
         root: {},
       },
     },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          color: "#eee",
+        },
+      },
+    },
   },
 });
 

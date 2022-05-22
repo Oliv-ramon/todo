@@ -1,9 +1,5 @@
 import { SxProps } from "@mui/material";
-
-export interface LogoStyles {
-  container: SxProps;
-  icon: SxProps;
-}
+import { LogoStyles } from "../../components/Logo";
 
 interface SignUpStyles {
   container: SxProps;
