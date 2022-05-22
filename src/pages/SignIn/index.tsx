@@ -53,7 +53,7 @@ export default function SignIn() {
       const { data: auth } = await api.signIn(formData);
       login(auth);
       setLoading(false);
-      navigate("/app");
+      navigate("/app/today");
     } catch (error: Error | AxiosError | any) {
       if (error.response) {
         const errorMessage = mapLoginErrorMessages(error.code);
@@ -69,7 +69,7 @@ export default function SignIn() {
   return (
     <Box sx={styles.container}>
       <Alert />
-      <Logo sx={styles.logo} />
+      <Logo sx={styles.logo} typographyVariant="h1" />
       <Typography variant="h2" component="h2">
         Login
       </Typography>

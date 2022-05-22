@@ -73,7 +73,7 @@ export default function SignUp() {
   return (
     <Box sx={styles.container}>
       <Alert />
-      <Logo sx={styles.logo} />
+      <Logo sx={styles.logo} typographyVariant="h1" />
       <Typography variant="h2" component="h2">
         Cadastro
       </Typography>

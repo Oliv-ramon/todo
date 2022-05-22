@@ -1,17 +1,24 @@
 import { Box } from "@mui/system";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { Typography } from "@mui/material";
-import { LogoStyles } from "../../pages/SignUp/style";
+import { Typography, SxProps, IconButton } from "@mui/material";
+
+export interface LogoStyles {
+  container: SxProps;
+  icon: SxProps;
+}
 
 interface LogoProps {
   sx: LogoStyles;
+  typographyVariant: "h1" | "h2";
 }
 
-export default function Logo({ sx: style }: LogoProps) {
+export default function Logo({ sx: style, typographyVariant }: LogoProps) {
   return (
     <Box sx={style.container}>
-      <CheckCircleRoundedIcon color="primary" sx={style.icon} />
-      <Typography variant="h1" component="h1">
+      <IconButton sx={{ p: 0 }}>
+        <CheckCircleRoundedIcon color="primary" sx={style.icon} />
+      </IconButton>
+      <Typography variant={typographyVariant} component="h1">
         TodoIt
       </Typography>
     </Box>
