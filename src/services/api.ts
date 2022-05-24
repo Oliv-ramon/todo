@@ -18,6 +18,13 @@ async function signIn(userData: UserData) {
   return baseApi.post("/users/login", userData);
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  color: string;
+  selected: boolean;
+}
+
 const api = {
   signUp,
   signIn,

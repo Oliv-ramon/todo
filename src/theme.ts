@@ -55,6 +55,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          background: "none",
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10,
+        },
+      },
+    },
   },
 });
 

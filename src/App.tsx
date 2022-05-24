@@ -8,6 +8,7 @@ import MainApp from "./components/MainApp";
 import Today from "./pages/Today";
 import theme from "./theme";
 import { AuthProvider } from "./contexts/AuthContext";
+import Add from "./pages/Add";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
               <Route path="/login" element={<SignIn />} />
               <Route path="/app" element={<MainApp />}>
                 <Route path="/app/today" element={<h1>today</h1>} />
-                <Route path="/app/add" element={<h1>add</h1>} />
+                <Route path="/app/add" element={<Add />} />
                 <Route path="/app/callendar" element={<h1>callendar</h1>} />
               </Route>
             </Routes>
