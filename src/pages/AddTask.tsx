@@ -1,16 +1,16 @@
 import { Box, IconButton, ToggleButton, Typography } from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import Input from "../../components/Input";
+import Input from "../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { useState } from "react";
-import { Category } from "../../services/api";
-import Drawer from "./Drawer";
-import { getWeekDays } from "../../utils/addPageUtils";
+import { Category } from "../services/api";
+import { getWeekDays } from "../utils/addPageUtils";
+import { useNavigate } from "react-router-dom";
 
-export default function Add() {
+export default function AddTask() {
   const [taskName, setTaskName] = useState("");
   const [weekDays, setWeekDays] = useState(getWeekDays());
-  const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[] | []>([
     { id: 1, name: "Trabalho", color: "#546", selected: false },
   ]);
@@ -110,10 +110,12 @@ export default function Add() {
               {name.toUpperCase()}
             </Box>
           ))}
-          <IconButton onClick={() => setOpen(true)} sx={{ p: 0 }}>
+          <IconButton
+            onClick={() => navigate("/appi/add/category")}
+            sx={{ p: 0 }}
+          >
             <AddBoxRoundedIcon sx={{ fontSize: "31px", p: 0 }} />
           </IconButton>
-          <Drawer open={open} setOpen={setOpen} categories={categories} />
         </Box>
       </Box>
     </Box>

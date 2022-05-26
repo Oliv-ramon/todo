@@ -9,16 +9,16 @@ import {
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PasswordInput from "../../components/PasswordInput";
-import Input from "../../components/Input";
-import Logo from "../../components/Logo";
-import GoogleLoginButton from "../../components/GoogleLoginButton";
-import styles from "../SignUp/style";
-import api from "../../services/api";
-import useAlert from "../../hooks/useAlert";
-import Alert from "../../components/Alert";
-import { mapLoginErrorMessages } from "../../utils/alertUtils";
-import useAuth from "../../hooks/useAuth";
+import PasswordInput from "../components/PasswordInput";
+import Input from "../components/Input";
+import Logo from "../components/Logo";
+import GoogleLoginButton from "../components/GoogleLoginButton";
+import api from "../services/api";
+import useAlert from "../hooks/useAlert";
+import Alert from "../components/Alert";
+import { mapLoginErrorMessages } from "../utils/alertUtils";
+import useAuth from "../hooks/useAuth";
+import { styles } from "./SignUp";
 
 export default function SignIn() {
   const navigate = useNavigate();

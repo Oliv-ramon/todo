@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Drawer as MUIDrawer,
   IconButton,
   ToggleButton,
@@ -10,33 +11,35 @@ import {
 import CheckedIcon from "@mui/icons-material/CheckCircleRounded";
 import UncheckedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import BackIcon from "@mui/icons-material/KeyboardBackspaceRounded";
-import Input from "../../components/Input";
+import Input from "../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useEffect, useState } from "react";
-import { getColors, getIcons } from "../../utils/addPageUtils";
-import { Category } from "../../services/api";
-import useAlert from "../../hooks/useAlert";
-import Alert from "../../components/Alert";
+import { getColors, getIcons } from "../utils/addPageUtils";
+import api from "../services/api";
+import useAlert from "../hooks/useAlert";
+import Alert from "../components/Alert";
+import useAuth from "../hooks/useAuth";
+import { AxiosError } from "axios";
+import useCategories from "../hooks/useCategories";
 
-interface DrawerProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  categories: Category[];
-}
-
-export default function Drawer({ open, setOpen, categories }: DrawerProps) {
+export default function AddCategory() {
   const [categoryData, setCategoryData] = useState({
     name: "",
     color: "",
     icon: "",
   });
+  const { categories } = useCategories();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { setMessage } = useAlert();
+  const { auth } = useAuth();
   const colors = getColors();
   const icons = getIcons();
-  const { setMessage } = useAlert();
   const haveEmptyFields = Object.values(categoryData).some(
     (f) => f.length === 0
   );
 
+  console.log(open);
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCategoryData({
       ...categoryData,
@@ -73,19 +76,38 @@ export default function Drawer({ open, setOpen, categories }: DrawerProps) {
     });
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setLoading(true);
 
-    const isDuplicatedCategory = categories.some(
+    const isDuplicatedCategory = categories?.some(
       (c) => c.name.toUpperCase() === categoryData.name.toUpperCase()
     );
 
     if (isDuplicatedCategory) {
+      setLoading(false);
       return setMessage({ text: "Essa categoria já existe.", type: "error" });
     }
+
+    try {
+      await api.createCategory(categoryData, auth?.token as string);
+      setMessage({ text: "Categoria criada com sucesso!", type: "success" });
+      setTimeout(() => {
+        setOpen(false);
+        setCategoryData({ name: "", color: "", icon: "" });
+      }, 5000);
+    } catch (error: Error | AxiosError | any) {
+      console.log(error);
+      setMessage({
+        text: "Houve um erro ao criar a categoria.",
+        type: "error",
+      });
+    }
+    setLoading(false);
   }
 
-  useEffect(() => {}, [categoryData]);
+  useEffect(() => setOpen(true), []);
+
   return (
     <MUIDrawer
       sx={{ background: "none" }}
@@ -180,10 +202,30 @@ export default function Drawer({ open, setOpen, categories }: DrawerProps) {
         <Button
           type="submit"
           variant="contained"
-          disabled={haveEmptyFields}
-          sx={{ width: "100%", my: "20px", fontSize: "16px", color: "#fff" }}
+          size="large"
+          disabled={haveEmptyFields || loading}
+          sx={{
+            width: "100%",
+            minHeight: "44px",
+            my: "20px",
+            fontSize: "16px",
+            color: "#fff",
+          }}
         >
-          Criar
+          {!loading ? (
+            "Criar"
+          ) : (
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "16px",
+              }}
+            >
+              Criando... <CircularProgress sx={{ color: "white" }} size={16} />
+            </Typography>
+          )}
         </Button>
       </Box>
     </MUIDrawer>

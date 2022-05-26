@@ -1,6 +1,6 @@
 import { Alert as MUIAlert, Snackbar, Typography } from "@mui/material";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import useAlert from "../../hooks/useAlert";
+import useAlert from "../hooks/useAlert";
 
 export default function Alert() {
   const { message, handleClose } = useAlert();
