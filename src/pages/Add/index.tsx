@@ -1,10 +1,10 @@
 import { Box, IconButton, ToggleButton, Typography } from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { useState } from "react";
-import { Category } from "../services/api";
-import { getWeekDays } from "../utils/addPageUtils";
+import { Category } from "../../services/api";
+import { getWeekDays } from "../../utils/addPageUtils";
 import { useNavigate } from "react-router-dom";
 
 export default function AddTask() {

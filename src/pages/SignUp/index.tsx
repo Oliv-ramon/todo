@@ -1,23 +1,21 @@
 import EmailIcon from "@mui/icons-material/Email";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {
-  Box,
-  Button,
-  Divider,
-  Link as StyledLink,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Link as StyledLink, Typography } from "@mui/material";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PasswordInput from "../components/PasswordInput";
-import Input from "../components/Input";
-import Logo, { LogoStyles } from "../components/Logo";
-import GoogleLoginButton from "../components/GoogleLoginButton";
-import api from "../services/api";
-import useAlert from "../hooks/useAlert";
-import Alert from "../components/Alert";
-import { mapSignUpErrorMessages } from "../utils/alertUtils";
+import {
+  PasswordInput,
+  Input,
+  Logo,
+  GoogleLoginButton,
+  Alert,
+  StyledButton,
+} from "../../components";
+import api from "../../services/api";
+import useAlert from "../../hooks/useAlert";
+import useAuth from "../../hooks/useAuth";
+import { mapSignUpErrorMessages } from "../../utils/alertUtils";
 import { SxProps } from "@mui/material";
 
 export default function SignUp() {
@@ -30,6 +28,7 @@ export default function SignUp() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const { setMessage } = useAlert();
+  const { auth } = useAuth();
   const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -70,10 +69,14 @@ export default function SignUp() {
     }
   }
 
+  useEffect(() => {
+    if (auth?.token) return navigate("/app/today");
+  }, []);
+
   return (
     <Box sx={styles.container}>
       <Alert />
-      <Logo sx={styles.logo} typographyVariant="h1" />
+      <Logo />
       <Typography variant="h2" component="h2">
         Cadastro
       </Typography>
@@ -115,16 +118,13 @@ export default function SignUp() {
           onChange={handleChange}
           value={formData.confirmPassword}
         />
-        <Button
-          disabled={haveEmptyFields || loading}
-          variant="contained"
-          sx={styles.button}
-          type="submit"
+        <StyledButton
+          haveEmptyFields={haveEmptyFields}
+          loading={loading}
+          loadingText="Cadastrando..."
         >
-          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-            Cadastrar
-          </Typography>
-        </Button>
+          Cadastrar
+        </StyledButton>
       </Box>
       <Typography sx={{ fontWeight: "500" }}>
         Já possui cadastro?
@@ -138,7 +138,6 @@ export default function SignUp() {
 
 interface SignUpStyles {
   container: SxProps;
-  logo: LogoStyles;
   form: SxProps;
   input: SxProps;
   button: SxProps;
@@ -154,18 +153,6 @@ export const styles: SignUpStyles = {
     justifyContent: "flex-start",
     background:
       "linear-gradient(rgba(11,70,1,1) 0%, rgba(9,45,1,1) 12%, rgba(6,28,1,1) 25%, rgba(1,8,1,1) 60%, rgba(0,5,0,1) 100%);",
-  },
-  logo: {
-    container: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      marginBottom: "50px",
-      gap: "10px",
-    },
-    icon: {
-      fontSize: "45px",
-    },
   },
   form: {
     width: "100%",

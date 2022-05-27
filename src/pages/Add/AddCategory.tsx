@@ -1,8 +1,6 @@
 import {
   Box,
-  Button,
   Checkbox,
-  CircularProgress,
   Drawer as MUIDrawer,
   IconButton,
   ToggleButton,
@@ -11,16 +9,17 @@ import {
 import CheckedIcon from "@mui/icons-material/CheckCircleRounded";
 import UncheckedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import BackIcon from "@mui/icons-material/KeyboardBackspaceRounded";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useEffect, useState } from "react";
-import { getColors, getIcons } from "../utils/addPageUtils";
-import api from "../services/api";
-import useAlert from "../hooks/useAlert";
-import Alert from "../components/Alert";
-import useAuth from "../hooks/useAuth";
+import { getColors, getIcons } from "../../utils/addPageUtils";
+import api from "../../services/api";
+import useAlert from "../../hooks/useAlert";
+import Alert from "../../components/Alert";
+import useAuth from "../../hooks/useAuth";
 import { AxiosError } from "axios";
-import useCategories from "../hooks/useCategories";
+import useCategories from "../../hooks/useCategories";
+import { StyledButton } from "../../components";
 
 export default function AddCategory() {
   const [categoryData, setCategoryData] = useState({
@@ -198,35 +197,13 @@ export default function AddCategory() {
             </ToggleButton>
           ))}
         </Box>
-
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          disabled={haveEmptyFields || loading}
-          sx={{
-            width: "100%",
-            minHeight: "44px",
-            my: "20px",
-            fontSize: "16px",
-            color: "#fff",
-          }}
+        <StyledButton
+          haveEmptyFields={haveEmptyFields}
+          loading={loading}
+          loadingText="Criando..."
         >
-          {!loading ? (
-            "Criar"
-          ) : (
-            <Typography
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontSize: "16px",
-              }}
-            >
-              Criando... <CircularProgress sx={{ color: "white" }} size={16} />
-            </Typography>
-          )}
-        </Button>
+          Criar
+        </StyledButton>
       </Box>
     </MUIDrawer>
   );
