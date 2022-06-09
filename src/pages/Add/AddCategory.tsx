@@ -3,6 +3,7 @@ import {
   Checkbox,
   Drawer as MUIDrawer,
   IconButton,
+  SxProps,
   ToggleButton,
   Typography,
 } from "@mui/material";
@@ -13,22 +14,29 @@ import Input from "../../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useEffect, useState } from "react";
 import { getColors, getIcons } from "../../utils/addPageUtils";
-import api from "../../services/api";
+import api, { Category } from "../../services/api";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../../components/Alert";
 import useAuth from "../../hooks/useAuth";
 import { AxiosError } from "axios";
-import useCategories from "../../hooks/useCategories";
 import { StyledButton } from "../../components";
 
-export default function AddCategory() {
+interface Props {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  categories: Category[];
+}
+
+export default function AddCategoryDrawer({
+  open,
+  setOpen,
+  categories,
+}: Props) {
   const [categoryData, setCategoryData] = useState({
     name: "",
     color: "",
     icon: "",
   });
-  const { categories } = useCategories();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setMessage } = useAlert();
   const { auth } = useAuth();
@@ -38,7 +46,6 @@ export default function AddCategory() {
     (f) => f.length === 0
   );
 
-  console.log(open);
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCategoryData({
       ...categoryData,
@@ -105,8 +112,6 @@ export default function AddCategory() {
     setLoading(false);
   }
 
-  useEffect(() => setOpen(true), []);
-
   return (
     <MUIDrawer
       sx={{ background: "none" }}
@@ -114,21 +119,7 @@ export default function AddCategory() {
       open={open}
       onClose={() => setOpen(false)}
     >
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          height: "96vh",
-          p: "40px 20px",
-          borderRadius: "10px 10px 0 0",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          background:
-            "linear-gradient(rgba(11,70,1,1) 0%, rgba(9,45,1,1) 12%, rgba(6,28,1,1) 25%, rgba(1,8,1,1) 60%, rgba(0,5,0,1) 100%)",
-          position: "relative",
-        }}
-      >
+      <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
         <Alert />
         <IconButton
           onClick={() => setOpen(false)}
@@ -172,18 +163,7 @@ export default function AddCategory() {
           </Box>
         </Box>
         <Typography variant="h2">Escolha um ícone</Typography>
-        <Box
-          sx={{
-            p: "20px",
-            border: "1px solid #333",
-            borderRadius: "10px",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            gap: "10px",
-            position: "relative",
-          }}
-        >
+        <Box sx={styles.toggleButtonsContainer}>
           {icons.map((Icon, id) => (
             <ToggleButton
               key={id}
@@ -208,3 +188,31 @@ export default function AddCategory() {
     </MUIDrawer>
   );
 }
+
+interface AddCategoryDrawaerStyles {
+  form: SxProps;
+  toggleButtonsContainer: SxProps;
+}
+
+const styles: AddCategoryDrawaerStyles = {
+  form: {
+    height: "96vh",
+    p: "40px 20px",
+    borderRadius: "10px 10px 0 0",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    background:
+      "linear-gradient(rgba(11,70,1,1) 0%, rgba(9,45,1,1) 12%, rgba(6,28,1,1) 25%, rgba(1,8,1,1) 60%, rgba(0,5,0,1) 100%)",
+    position: "relative",
+  },
+  toggleButtonsContainer: {
+    p: "20px",
+    border: "1px solid #333",
+    borderRadius: "10px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: "10px",
+  },
+};

@@ -2,7 +2,7 @@
 
 import userDataFactory from "../factories/userDataFactory";
 
-describe("Sign-up/Sign-in tests", () => {
+describe("E2E tests", () => {
   beforeEach(truncateUsers);
 
   const appUrl = "http://localhost:3000";
@@ -40,8 +40,14 @@ describe("Sign-up/Sign-in tests", () => {
     cy.get("button[type=submit]").click();
 
     cy.wait("@login").then(() => {});
-    cy.url().should("equal", `${appUrl}/app`);
+    cy.url().should("equal", `${appUrl}/app/today`);
   });
+});
+
+it("should create a category", () => {
+  const userData = userDataFactory();
+  const response = cy.request("POST", "http://localhost:5000/users", userData);
+  console.log(response);
 });
 
 function truncateUsers() {

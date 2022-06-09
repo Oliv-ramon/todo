@@ -6,10 +6,12 @@ import { useState } from "react";
 import { Category } from "../../services/api";
 import { getWeekDays } from "../../utils/addPageUtils";
 import { useNavigate } from "react-router-dom";
+import AddCategoryDrawer from "./AddCategory";
 
 export default function AddTask() {
   const [taskName, setTaskName] = useState("");
   const [weekDays, setWeekDays] = useState(getWeekDays());
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[] | []>([
     { id: 1, name: "Trabalho", color: "#546", selected: false },
@@ -110,13 +112,15 @@ export default function AddTask() {
               {name.toUpperCase()}
             </Box>
           ))}
-          <IconButton
-            onClick={() => navigate("/appi/add/category")}
-            sx={{ p: 0 }}
-          >
+          <IconButton onClick={() => setOpen(true)} sx={{ p: 0 }}>
             <AddBoxRoundedIcon sx={{ fontSize: "31px", p: 0 }} />
           </IconButton>
         </Box>
+        <AddCategoryDrawer
+          open={open}
+          setOpen={setOpen}
+          categories={categories}
+        />
       </Box>
     </Box>
   );
