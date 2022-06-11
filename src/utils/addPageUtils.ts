@@ -14,18 +14,6 @@ import {
   red,
 } from "@mui/material/colors";
 
-export function getWeekDays() {
-  return [
-    { name: "Domingo", selected: false },
-    { name: "Segunda", selected: false },
-    { name: "Terça", selected: false },
-    { name: "Quarta", selected: false },
-    { name: "Quinta", selected: false },
-    { name: "Sexta", selected: false },
-    { name: "Sábado", selected: false },
-  ];
-}
-
 export function getColors() {
   return [
     red["A700"],

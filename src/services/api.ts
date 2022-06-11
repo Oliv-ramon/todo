@@ -25,6 +25,16 @@ async function signUp(userData: UserData) {
 async function signIn(userData: UserData) {
   return baseApi.post("/users/login", userData);
 }
+
+export interface WeekDay {
+  id: number;
+  name: string;
+}
+
+async function getWeekDays() {
+  return baseApi.get<WeekDay[]>("/days");
+}
+
 type CategoryData = Omit<Category, "id" | "selected">;
 
 async function getCategories(token: string) {
@@ -37,16 +47,27 @@ async function createCategory(categoryData: CategoryData, token: string) {
   return baseApi.post("/categories", categoryData, config);
 }
 
+/* async function createTask(taskData: CategoryData, token: string) {
+  const config = getConfig(token);
+  return baseApi.post("/categories", categoryData, config);
+} */
+
 export interface Category {
   id: number;
   name: string;
   color: string;
-  selected: boolean;
+}
+
+export interface Task {
+  id: number;
+  name: string;
+  weekdays: WeekDay[];
 }
 
 const api = {
   signUp,
   signIn,
+  getWeekDays,
   getCategories,
   createCategory,
 };
