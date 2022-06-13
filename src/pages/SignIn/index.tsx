@@ -24,7 +24,6 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const { setMessage } = useAlert();
   const { auth, login } = useAuth();
-  const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -96,7 +95,7 @@ export default function SignIn() {
           value={formData.password}
         />
         <StyledButton
-          haveEmptyFields={haveEmptyFields}
+          fields={formData}
           loading={loading}
           loadingText="Entrando..."
         >

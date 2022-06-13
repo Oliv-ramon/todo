@@ -8,6 +8,7 @@ import SignIn from "./pages/SignIn";
 import MainApp from "./components/MainApp";
 import AddTask from "./pages/Add";
 import theme from "./theme";
+import { Alert } from "./components";
 
 function App() {
   return (

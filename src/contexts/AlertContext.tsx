@@ -19,7 +19,6 @@ interface Props {
 
 export function AlertProvider({ children }: Props) {
   const [message, setMessage] = useState<AlertMessage | null>(null);
-
   function handleClose() {
     setMessage(null);
   }

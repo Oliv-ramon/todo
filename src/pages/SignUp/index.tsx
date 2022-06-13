@@ -29,7 +29,6 @@ export default function SignUp() {
   const [loading, setLoading] = useState<boolean>(false);
   const { setMessage } = useAlert();
   const { auth } = useAuth();
-  const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -119,9 +118,9 @@ export default function SignUp() {
           value={formData.confirmPassword}
         />
         <StyledButton
-          haveEmptyFields={haveEmptyFields}
           loading={loading}
           loadingText="Cadastrando..."
+          fields={formData}
         >
           Cadastrar
         </StyledButton>

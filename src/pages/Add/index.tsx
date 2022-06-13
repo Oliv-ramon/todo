@@ -11,6 +11,9 @@ import useAlert from "../../hooks/useAlert";
 import api, { Category, WeekDay } from "../../services/api";
 import useDays from "../../hooks/api/useWeekDays";
 import useCategories from "../../hooks/api/useCategories";
+import { Alert, StyledButton } from "../../components";
+import useCreateTask from "../../hooks/api/useCreateTask";
+import { mapCreateTaskErrorMessages } from "../../utils/alertUtils";
 
 export default function AddTask() {
   const [taskName, setTaskName] = useState("");
@@ -22,6 +25,7 @@ export default function AddTask() {
   const { weekDays, weekDaysLoading } = useDays();
   const { categories, categoriesLoading } = useCategories();
   const { setMessage } = useAlert();
+  const { createTask, createTaskLoading } = useCreateTask();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setTaskName(e.target.value);
@@ -40,7 +44,6 @@ export default function AddTask() {
   }
 
   function handleCategoryClick(category: Category) {
-    console.log(selectedCategory);
     if (category.id === selectedCategory?.id) {
       setSelectedCategory(null);
     } else {
@@ -48,33 +51,30 @@ export default function AddTask() {
     }
   }
 
-  /* async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    setLoading(true);
-
-    if (!taskName || !selectedCategory || !selectedWeekDay) {
-      setMessage({
-        text: "Todos os campos precisam ser preenchidos.",
-        type: "error",
-      });
-      return setLoading(false);
-    }
-
     try {
-      await api.signIn(formData);
-      setLoading(false);
-    } catch (error: Error | AxiosError | any) {
-      if (error.response) {
-        const errorMessage = mapLoginErrorMessages(error.code);
-        setMessage({
-          type: "error",
-          text: errorMessage,
-        });
-        return setLoading(false);
-      }
+      const taskData = {
+        name: taskName,
+        categoryId: selectedCategory?.id,
+        days: selectedWeekDays,
+      };
+      await createTask(taskData);
+      setMessage({
+        text: "Tarefa criada com sucesso!",
+        type: "success",
+      });
+    } catch (error: AxiosError | Error | any) {
+      const errorCode = error.response.status as number;
+
+      const errorMessage = mapCreateTaskErrorMessages(errorCode);
+      setMessage({
+        type: "error",
+        text: errorMessage,
+      });
     }
-  } */
+  }
 
   return (
     <Box
@@ -85,7 +85,9 @@ export default function AddTask() {
         justifyContent: "center",
         gap: "20px",
       }}
+      onSubmit={handleSubmit}
     >
+      <Alert />
       <Typography component="h2" variant="h2">
         Crie uma nova tarefa!
       </Typography>
@@ -155,6 +157,13 @@ export default function AddTask() {
           categories={categories as unknown as Category[]}
         />
       </Box>
+      <StyledButton
+        loading={createTaskLoading}
+        loadingText="Criando"
+        fields={{ taskName, selectedCategory, selectedWeekDays }}
+      >
+        Criar
+      </StyledButton>
     </Box>
   );
 }

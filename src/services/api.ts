@@ -43,14 +43,21 @@ async function getCategories(token: string) {
 }
 
 async function createCategory(categoryData: CategoryData, token: string) {
+  console.log("aqui");
   const config = getConfig(token);
   return baseApi.post("/categories", categoryData, config);
 }
 
-/* async function createTask(taskData: CategoryData, token: string) {
+export interface CreateTaskData {
+  name: string;
+  weekdays: WeekDay[];
+  categoryId: number;
+}
+
+async function createTask(taskData: CreateTaskData, token: string) {
   const config = getConfig(token);
-  return baseApi.post("/categories", categoryData, config);
-} */
+  return baseApi.post("/tasks", taskData, config);
+}
 
 export interface Category {
   id: number;
@@ -70,6 +77,7 @@ const api = {
   getWeekDays,
   getCategories,
   createCategory,
+  createTask,
 };
 
 export default api;

@@ -2,17 +2,19 @@ import { Button, CircularProgress, Typography } from "@mui/material";
 
 interface Props {
   children: React.ReactNode;
-  haveEmptyFields: boolean;
   loading: boolean;
   loadingText: string;
+  fields: any;
 }
 
 export default function StyledButton({
-  haveEmptyFields,
   loading,
   loadingText,
   children,
+  fields,
 }: Props) {
+  const haveEmptyFields = Object.values(fields).some((f) => !f);
+
   return (
     <Button
       type="submit"

@@ -44,9 +44,6 @@ export default function AddCategoryDrawer({
   const { auth } = useAuth();
   const colors = getColors();
   const icons = getIcons();
-  const haveEmptyFields = Object.values(categoryData).some(
-    (f) => f.length === 0
-  );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCategoryData({
@@ -181,9 +178,9 @@ export default function AddCategoryDrawer({
           ))}
         </Box>
         <StyledButton
-          haveEmptyFields={haveEmptyFields}
           loading={loading}
           loadingText="Criando..."
+          fields={categoryData}
         >
           Criar
         </StyledButton>
