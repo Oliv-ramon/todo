@@ -11,7 +11,31 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-export default function Category() {
+
+export default function Today() {
+  return (
+    <Box
+      component="main"
+      sx={{
+        height: "calc(100vh - 152px)",
+        overflow: "scroll",
+        "&.::-webkit-scrollbar": { display: "none" },
+      }}
+    >
+      <Box component="section">
+        <Typography>Categorias</Typography>
+        <Category />
+        <Category />
+        <Category />
+        <Category />
+        <Category />
+        <Category />
+      </Box>
+    </Box>
+  );
+}
+
+function Category() {
   return (
     <Paper sx={{ backgroundColor: "#333" }} elevation={4}>
       <Box sx={{ p: "0" }} component="ul">

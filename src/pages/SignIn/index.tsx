@@ -1,24 +1,19 @@
 import EmailIcon from "@mui/icons-material/Email";
-import {
-  Box,
-  Button,
-  Divider,
-  Link as StyledLink,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Link as StyledLink, Typography } from "@mui/material";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import Input from "../../components/Input";
 import Logo from "../../components/Logo";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-import styles from "../SignUp/style";
 import api from "../../services/api";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../../components/Alert";
 import { mapLoginErrorMessages } from "../../utils/alertUtils";
 import useAuth from "../../hooks/useAuth";
+import { styles } from "../SignUp";
+import { StyledButton } from "../../components";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -28,7 +23,7 @@ export default function SignIn() {
   });
   const [loading, setLoading] = useState(false);
   const { setMessage } = useAlert();
-  const { login } = useAuth();
+  const { auth, login } = useAuth();
   const haveEmptyFields = Object.values(formData).some((f) => f.length === 0);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -66,10 +61,14 @@ export default function SignIn() {
     }
   }
 
+  useEffect(() => {
+    if (auth?.token) return navigate("/app/today");
+  }, []);
+
   return (
     <Box sx={styles.container}>
       <Alert />
-      <Logo sx={styles.logo} typographyVariant="h1" />
+      <Logo />
       <Typography variant="h2" component="h2">
         Login
       </Typography>
@@ -95,16 +94,13 @@ export default function SignIn() {
           onChange={handleChange}
           value={formData.password}
         />
-        <Button
-          disabled={haveEmptyFields || loading}
-          variant="contained"
-          sx={styles.button}
-          type="submit"
+        <StyledButton
+          haveEmptyFields={haveEmptyFields}
+          loading={loading}
+          loadingText="Entrando..."
         >
-          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-            Entrar
-          </Typography>
-        </Button>
+          Entrar
+        </StyledButton>
       </Box>
       <Typography sx={{ fontWeight: "500", textAlign: "center" }}>
         Ainda não possui cadastro?
