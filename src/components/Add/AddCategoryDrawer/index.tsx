@@ -12,26 +12,28 @@ import UncheckedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import BackIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import Input from "../../Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getColors, getIcons } from "../../../utils/addPageUtils";
 import api, { Category } from "../../../services/api";
 import useAlert from "../../../hooks/useAlert";
 import Alert from "../../Alert";
 import useAuth from "../../../hooks/useAuth";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from "axios";
 import { StyledButton } from "../..";
-import useCategories from "../../../hooks/api/useCategories";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   categories: Category[];
+  getCategories: (...args: any) => Promise<any>;
 }
 
 export default function AddCategoryDrawer({
   open,
   setOpen,
   categories,
+  getCategories,
 }: Props) {
   const [categoryData, setCategoryData] = useState({
     name: "",
@@ -39,7 +41,6 @@ export default function AddCategoryDrawer({
     icon: "",
   });
   const [loading, setLoading] = useState(false);
-  const { getCategories } = useCategories();
   const { setMessage } = useAlert();
   const { auth } = useAuth();
   const colors = getColors();

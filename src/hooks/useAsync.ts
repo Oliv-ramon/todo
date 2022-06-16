@@ -14,10 +14,10 @@ export default function useAsync(handler: Handler, immediate: boolean = true) {
     setError(null);
 
     try {
-      const { data } = await handler(...args);
-      setData(data);
+      const { data: newData } = await handler(...args);
+      setData(newData);
       setLoading(false);
-      return data;
+      return newData;
     } catch (err: AxiosError | Error | any) {
       setError(err);
       setLoading(false);

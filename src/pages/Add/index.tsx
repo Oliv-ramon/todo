@@ -1,6 +1,7 @@
 import { Box, IconButton, ToggleButton, Typography } from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from "axios";
 import { useState } from "react";
 
@@ -8,7 +9,7 @@ import Input from "../../components/Input";
 import AddCategoryDrawer from "../../components/Add/AddCategoryDrawer";
 import SelectCategoryButton from "../../components/Add/SelectCategoryButton";
 import useAlert from "../../hooks/useAlert";
-import api, { Category, WeekDay } from "../../services/api";
+import { Category, WeekDay } from "../../services/api";
 import useDays from "../../hooks/api/useWeekDays";
 import useCategories from "../../hooks/api/useCategories";
 import { Alert, StyledButton } from "../../components";
@@ -23,7 +24,7 @@ export default function AddTask() {
   );
   const [open, setOpen] = useState(false);
   const { weekDays, weekDaysLoading } = useDays();
-  const { categories, categoriesLoading } = useCategories();
+  const { categories, categoriesLoading, getCategories } = useCategories();
   const { setMessage } = useAlert();
   const { createTask, createTaskLoading } = useCreateTask();
 
@@ -53,6 +54,13 @@ export default function AddTask() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (selectedWeekDays.length === 0) {
+      return setMessage({
+        type: "error",
+        text: "Selecione pelo menos um dia.",
+      });
+    }
 
     try {
       const taskData = {
@@ -140,7 +148,7 @@ export default function AddTask() {
           }}
         >
           {!categoriesLoading &&
-            (categories as unknown as Category[]).map((category) => (
+            (categories as unknown as Category[])?.map((category) => (
               <SelectCategoryButton
                 category={category}
                 selected={category.id === selectedCategory?.id}
@@ -155,6 +163,7 @@ export default function AddTask() {
           open={open}
           setOpen={setOpen}
           categories={categories as unknown as Category[]}
+          getCategories={getCategories}
         />
       </Box>
       <StyledButton
