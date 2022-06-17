@@ -1,52 +1,101 @@
 import { Box, IconButton, ToggleButton, Typography } from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import Input from "../../components/Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AxiosError } from "axios";
 import { useState } from "react";
-import { Category } from "../../services/api";
-import { getWeekDays } from "../../utils/addPageUtils";
-import { useNavigate } from "react-router-dom";
-import AddCategoryDrawer from "./AddCategory";
+
+import Input from "../../components/Input";
+import AddCategoryDrawer from "../../components/Add/AddCategoryDrawer";
+import SelectCategoryButton from "../../components/Add/SelectCategoryButton";
+import useAlert from "../../hooks/useAlert";
+import { Category, WeekDay } from "../../services/api";
+import useDays from "../../hooks/api/useWeekDays";
+import useCategories from "../../hooks/api/useCategories";
+import { Alert, StyledButton } from "../../components";
+import useCreateTask from "../../hooks/api/useCreateTask";
+import { mapCreateTaskErrorMessages } from "../../utils/alertUtils";
 
 export default function AddTask() {
   const [taskName, setTaskName] = useState("");
-  const [weekDays, setWeekDays] = useState(getWeekDays());
+  const [selectedWeekDays, setSelectedWeekDays] = useState<WeekDay[] | []>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const [categories, setCategories] = useState<Category[] | []>([
-    { id: 1, name: "Trabalho", color: "#546", selected: false },
-  ]);
+  const { weekDays, weekDaysLoading } = useDays();
+  const { categories, categoriesLoading, getCategories } = useCategories();
+  const { setMessage } = useAlert();
+  const { createTask, createTaskLoading } = useCreateTask();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setTaskName(e.target.value);
   }
 
-  function handleToggle(id: number) {
-    const dayId = id;
-    const newArr = [...weekDays];
-    newArr[dayId] = { ...newArr[dayId], selected: !weekDays[dayId].selected };
-    setWeekDays(newArr);
+  function handleWeekDaySelection(day: WeekDay) {
+    const dayIsSelected = selectedWeekDays.some((d) => d.name === day.name);
+
+    if (dayIsSelected) {
+      setSelectedWeekDays([
+        ...selectedWeekDays.filter((d) => d.name !== day.name),
+      ]);
+    } else {
+      setSelectedWeekDays([...selectedWeekDays, day]);
+    }
   }
 
-  function handleCategoryClick(categoryId: number) {
-    console.log(categoryId);
-    const newArr = [...categories];
-    console.log(newArr[categoryId]);
-    newArr[categoryId] = {
-      ...newArr[categoryId],
-      selected: !categories[categoryId].selected,
-    };
-    setCategories(newArr);
+  function handleCategoryClick(category: Category) {
+    if (category.id === selectedCategory?.id) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(category);
+    }
   }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (selectedWeekDays.length === 0) {
+      return setMessage({
+        type: "error",
+        text: "Selecione pelo menos um dia.",
+      });
+    }
+
+    try {
+      const taskData = {
+        name: taskName,
+        categoryId: selectedCategory?.id,
+        days: selectedWeekDays,
+      };
+      await createTask(taskData);
+      setMessage({
+        text: "Tarefa criada com sucesso!",
+        type: "success",
+      });
+    } catch (error: AxiosError | Error | any) {
+      const errorCode = error.response.status as number;
+
+      const errorMessage = mapCreateTaskErrorMessages(errorCode);
+      setMessage({
+        type: "error",
+        text: errorMessage,
+      });
+    }
+  }
+
   return (
     <Box
+      component="form"
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         gap: "20px",
       }}
+      onSubmit={handleSubmit}
     >
+      <Alert />
       <Typography component="h2" variant="h2">
         Crie uma nova tarefa!
       </Typography>
@@ -70,18 +119,19 @@ export default function AddTask() {
             background: "none",
           }}
         >
-          {weekDays.map((day, id) => (
-            <ToggleButton
-              key={id}
-              id={id.toString()}
-              value={day.name[0]}
-              selected={day.selected}
-              onChange={() => handleToggle(id)}
-              color="primary"
-            >
-              {day.name[0]}
-            </ToggleButton>
-          ))}
+          {!weekDaysLoading &&
+            (weekDays as unknown as WeekDay[]).map((day, id) => (
+              <ToggleButton
+                key={id}
+                id={id.toString()}
+                value={day.name[0]}
+                selected={selectedWeekDays.some((d) => d.name === day.name)}
+                onChange={() => handleWeekDaySelection(day)}
+                color="primary"
+              >
+                {day.name[0]}
+              </ToggleButton>
+            ))}
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -97,21 +147,14 @@ export default function AddTask() {
             background: "none",
           }}
         >
-          {categories.map(({ id, name, color, selected }) => (
-            <Box
-              key={id}
-              sx={{
-                p: "5px 10px",
-                borderRadius: "10px",
-                backgroundColor: !selected ? color : "",
-                color: !selected ? "" : color,
-                fontSize: "14px",
-              }}
-              onClick={() => handleCategoryClick(id - 1)}
-            >
-              {name.toUpperCase()}
-            </Box>
-          ))}
+          {!categoriesLoading &&
+            (categories as unknown as Category[])?.map((category) => (
+              <SelectCategoryButton
+                category={category}
+                selected={category.id === selectedCategory?.id}
+                onClick={handleCategoryClick}
+              />
+            ))}
           <IconButton onClick={() => setOpen(true)} sx={{ p: 0 }}>
             <AddBoxRoundedIcon sx={{ fontSize: "31px", p: 0 }} />
           </IconButton>
@@ -119,9 +162,17 @@ export default function AddTask() {
         <AddCategoryDrawer
           open={open}
           setOpen={setOpen}
-          categories={categories}
+          categories={categories as unknown as Category[]}
+          getCategories={getCategories}
         />
       </Box>
+      <StyledButton
+        loading={createTaskLoading}
+        loadingText="Criando"
+        fields={{ taskName, selectedCategory, selectedWeekDays }}
+      >
+        Criar
+      </StyledButton>
     </Box>
   );
 }

@@ -10,13 +10,25 @@ export default function MainApp() {
 
   if (auth === null) return <Navigate to="/login" />;
   return (
-    <Box sx={{ padding: "0 20px" }}>
+    <Box
+      sx={{
+        padding: "95px 20px 50px 20px",
+      }}
+    >
       <Box
         component="header"
         sx={{
+          width: "100%",
+          padding: "0 20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          background: "inherit",
+          backgroundAttachment: "fixed",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: 1,
         }}
       >
         <Logo />

@@ -2,11 +2,13 @@ import HomeIcon from "@mui/icons-material/HomeRounded";
 import AddIcon from "@mui/icons-material/AddCircleRounded";
 import CalendarIcon from "@mui/icons-material/CalendarMonthRounded";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Footer() {
-  const [value, setValue] = useState("today");
+  const { pathname } = useLocation();
+  const actualRoute = pathname.split("/")[2];
+  const [value, setValue] = useState(actualRoute);
   const navigate = useNavigate();
 
   return (

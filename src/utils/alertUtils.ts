@@ -11,3 +11,9 @@ export function mapLoginErrorMessages(statusCode: StatusCode) {
 
   return "Erro ao fazer login, por favor, tente novamente.";
 }
+
+export function mapCreateTaskErrorMessages(statusCode: StatusCode) {
+  if (statusCode === 409) return "Já existe uma tarefa com esse nome.";
+
+  return "Não foi possível criar a tarefa, tente novamente.";
+}

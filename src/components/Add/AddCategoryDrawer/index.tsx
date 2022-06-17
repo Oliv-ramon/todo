@@ -10,27 +10,30 @@ import {
 import CheckedIcon from "@mui/icons-material/CheckCircleRounded";
 import UncheckedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import BackIcon from "@mui/icons-material/KeyboardBackspaceRounded";
-import Input from "../../components/Input";
+import Input from "../../Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import React, { useEffect, useState } from "react";
-import { getColors, getIcons } from "../../utils/addPageUtils";
-import api, { Category } from "../../services/api";
-import useAlert from "../../hooks/useAlert";
-import Alert from "../../components/Alert";
-import useAuth from "../../hooks/useAuth";
+import React, { useState } from "react";
+import { getColors, getIcons } from "../../../utils/addPageUtils";
+import api, { Category } from "../../../services/api";
+import useAlert from "../../../hooks/useAlert";
+import Alert from "../../Alert";
+import useAuth from "../../../hooks/useAuth";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from "axios";
-import { StyledButton } from "../../components";
+import { StyledButton } from "../..";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   categories: Category[];
+  getCategories: (...args: any) => Promise<any>;
 }
 
 export default function AddCategoryDrawer({
   open,
   setOpen,
   categories,
+  getCategories,
 }: Props) {
   const [categoryData, setCategoryData] = useState({
     name: "",
@@ -42,9 +45,6 @@ export default function AddCategoryDrawer({
   const { auth } = useAuth();
   const colors = getColors();
   const icons = getIcons();
-  const haveEmptyFields = Object.values(categoryData).some(
-    (f) => f.length === 0
-  );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCategoryData({
@@ -102,6 +102,7 @@ export default function AddCategoryDrawer({
         setOpen(false);
         setCategoryData({ name: "", color: "", icon: "" });
       }, 5000);
+      await getCategories();
     } catch (error: Error | AxiosError | any) {
       console.log(error);
       setMessage({
@@ -178,9 +179,9 @@ export default function AddCategoryDrawer({
           ))}
         </Box>
         <StyledButton
-          haveEmptyFields={haveEmptyFields}
           loading={loading}
           loadingText="Criando..."
+          fields={categoryData}
         >
           Criar
         </StyledButton>

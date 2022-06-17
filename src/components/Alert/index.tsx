@@ -14,7 +14,7 @@ export default function Alert() {
     >
       <MUIAlert
         variant="filled"
-        severity={message?.type || "error"}
+        severity={message?.type}
         onClose={handleClose}
         sx={{
           width: "100%",
