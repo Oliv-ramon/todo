@@ -10,17 +10,17 @@ import {
 import CheckedIcon from "@mui/icons-material/CheckCircleRounded";
 import UncheckedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import BackIcon from "@mui/icons-material/KeyboardBackspaceRounded";
-import Input from "../../Input";
+import Input from "../../../Input";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useState } from "react";
-import { getColors, getIcons } from "../../../utils/addPageUtils";
-import api, { Category } from "../../../services/api";
-import useAlert from "../../../hooks/useAlert";
-import Alert from "../../Alert";
-import useAuth from "../../../hooks/useAuth";
+import { getColors, getIcons } from "../../../../utils/addPageUtils";
+import api, { Category } from "../../../../services/api";
+import useAlert from "../../../../hooks/useAlert";
+import Alert from "../../../Alert";
+import useAuth from "../../../../hooks/useAuth";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from "axios";
-import { StyledButton } from "../..";
+import { StyledButton } from "../../..";
 
 interface Props {
   open: boolean;

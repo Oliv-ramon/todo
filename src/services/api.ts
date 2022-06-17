@@ -1,14 +1,19 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const baseApi = axios.create({
   baseURL: process.env.REACT_APP_API || "http://localhost:5000/",
 });
 
-function getConfig(token: string) {
+interface ConfigParams {
+  categoryId?: number;
+}
+
+function getConfig(token: string, params?: ConfigParams): AxiosRequestConfig {
   return {
     headers: {
       authorization: `Bearer ${token}`,
     },
+    params,
   };
 }
 
@@ -16,6 +21,27 @@ interface UserData {
   name?: string;
   email: string;
   password: string;
+}
+
+export interface WeekDay {
+  id: number;
+  name: string;
+}
+
+export interface CreateTaskData {
+  name: string;
+  weekdays: WeekDay[];
+  categoryId: number;
+}
+
+type CreateCategoryData = Omit<Category, "id" | "userId">;
+
+export interface Category {
+  id: number;
+  name: string;
+  color: string;
+  icon: string;
+  userId: number;
 }
 
 async function signUp(userData: UserData) {
@@ -26,32 +52,19 @@ async function signIn(userData: UserData) {
   return baseApi.post("/users/login", userData);
 }
 
-export interface WeekDay {
-  id: number;
-  name: string;
-}
-
 async function getWeekDays() {
   return baseApi.get<WeekDay[]>("/days");
 }
-
-type CategoryData = Omit<Category, "id" | "selected">;
 
 async function getCategories(token: string) {
   const config = getConfig(token);
   return baseApi.get<Category[] | null>("/categories", config);
 }
 
-async function createCategory(categoryData: CategoryData, token: string) {
+async function createCategory(categoryData: CreateCategoryData, token: string) {
   console.log("aqui");
   const config = getConfig(token);
   return baseApi.post("/categories", categoryData, config);
-}
-
-export interface CreateTaskData {
-  name: string;
-  weekdays: WeekDay[];
-  categoryId: number;
 }
 
 async function createTask(taskData: CreateTaskData, token: string) {
@@ -59,10 +72,10 @@ async function createTask(taskData: CreateTaskData, token: string) {
   return baseApi.post("/tasks", taskData, config);
 }
 
-export interface Category {
-  id: number;
-  name: string;
-  color: string;
+async function getTasksByCategoryId(categoryId: number, token: string) {
+  const config = getConfig(token, { categoryId });
+  console.log(config);
+  return baseApi.get<Task[] | null>("/tasks", config);
 }
 
 export interface Task {
@@ -78,6 +91,7 @@ const api = {
   getCategories,
   createCategory,
   createTask,
+  getTasksByCategoryId,
 };
 
 export default api;

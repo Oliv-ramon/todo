@@ -8,6 +8,7 @@ import SignIn from "./pages/SignIn";
 import MainApp from "./components/MainApp";
 import AddTask from "./pages/Add";
 import theme from "./theme";
+import Today from "./pages/Today";
 //test
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
               <Route path="/" element={<SignUp />} />
               <Route path="/login" element={<SignIn />} />
               <Route path="/app" element={<MainApp />}>
-                <Route path="/app/today" element={<h1>today</h1>} />
+                <Route path="/app/today" element={<Today />} />
                 <Route path="/app/add" element={<AddTask />} />
                 <Route path="/app/callendar" element={<h1>callendar</h1>} />
               </Route>

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Category } from "../../../services/api";
+import { Category } from "../../../../services/api";
 
 interface Props {
   category: Category;

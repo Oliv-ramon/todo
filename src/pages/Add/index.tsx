@@ -6,8 +6,8 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 
 import Input from "../../components/Input";
-import AddCategoryDrawer from "../../components/Add/AddCategoryDrawer";
-import SelectCategoryButton from "../../components/Add/SelectCategoryButton";
+import AddCategoryDrawer from "../../components/pages/Add/AddCategoryDrawer";
+import SelectCategoryButton from "../../components/pages/Add/SelectCategoryButton";
 import useAlert from "../../hooks/useAlert";
 import { Category, WeekDay } from "../../services/api";
 import useDays from "../../hooks/api/useWeekDays";
