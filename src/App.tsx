@@ -9,7 +9,7 @@ import MainApp from "./components/MainApp";
 import AddTask from "./pages/Add";
 import theme from "./theme";
 import Today from "./pages/Today";
-//test
+
 function App() {
   return (
     <ThemeProvider theme={theme}>

@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Task from "../Task";
+
 import { getIcon } from "../../../../utils/todayPageUtils";
 import styled from "@emotion/styled";
 import { useState } from "react";
@@ -25,7 +26,7 @@ interface Props {
 
 export default function Category({ id, name, icon, color, userId }: Props) {
   const [expanded, setExpanded] = useState<boolean | undefined>(false);
-  const { tasks, tasksLoading, getTasksByCategoryId } = useTasks();
+  const { tasks, tasksLoading, getTodayTasksByCategoryId } = useTasks();
   const Icon = getIcon(icon);
 
   async function handleChange(
@@ -36,7 +37,7 @@ export default function Category({ id, name, icon, color, userId }: Props) {
       return setExpanded(false);
     }
 
-    if (tasks === null) await getTasksByCategoryId(id);
+    if (tasks === null) await getTodayTasksByCategoryId(id);
     setExpanded(true);
   }
 
@@ -63,17 +64,11 @@ export default function Category({ id, name, icon, color, userId }: Props) {
               <MoreHorizIcon sx={{ color }} />
             </CategoryOptionsBox>
           </CategoryLabel>
-          <AccordionDetails
-            sx={{
-              backgroundColor: "#1b1b1b",
-              borderRadius: "0 0 10px 10px",
-              p: "8px 16px 16px 0px",
-            }}
-          >
+          <TasksContainer>
             {tasks?.map((task) => (
-              <Task categoryColor={color} {...task} />
+              <Task key={task.id} categoryColor={color} {...task} />
             ))}
-          </AccordionDetails>
+          </TasksContainer>
         </Accordion>
       </Box>
     </Paper>
@@ -91,4 +86,11 @@ const CategoryOptionsBox = styled(Box)`
 
   display: flex;
   gap: 8px;
+`;
+
+const TasksContainer = styled(AccordionDetails)`
+  background-color: #1b1b1b;
+  border-radius: 0 0 10px 10px;
+  padding: 8px 16px 16px 0px;
+  color: #aaa;
 `;

@@ -21,13 +21,7 @@ export default function Task({ name, categoryColor }: Props) {
           <CheckedIcon sx={{ color: categoryColor, fontSize: "26px" }} />
         }
       />
-      <Typography
-        sx={{
-          color: "#aaa",
-        }}
-      >
-        {name}
-      </Typography>
+      <Typography>{name}</Typography>
     </Box>
   );
 }

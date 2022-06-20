@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 
 interface Auth {
+  userId: number;
   userName: string;
   token: string;
 }

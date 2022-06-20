@@ -6,17 +6,17 @@ export default function useTasks() {
   const { auth } = useAuth();
 
   const {
-    act: getTasksByCategoryId,
+    act: getTodayTasksByCategoryId,
     loading: tasksLoading,
     data: tasks,
   } = useAsync(
     (categoryId: number) =>
-      api.getTasksByCategoryId(categoryId, auth?.token as string),
+      api.getTodayTasksByCategoryId(categoryId, auth?.token as string),
     false
   );
 
   return {
-    getTasksByCategoryId,
+    getTodayTasksByCategoryId,
     tasksLoading,
     tasks: tasks as unknown as Task[],
   };

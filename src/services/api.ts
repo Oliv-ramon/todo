@@ -56,9 +56,10 @@ async function getWeekDays() {
   return baseApi.get<WeekDay[]>("/days");
 }
 
-async function getCategories(token: string) {
+async function getCategories(token: string, scope?: "today") {
   const config = getConfig(token);
-  return baseApi.get<Category[] | null>("/categories", config);
+  const lastRoute = scope !== undefined ? `/${scope}` : "";
+  return baseApi.get<Category[] | null>(`/categories${lastRoute}`, config);
 }
 
 async function createCategory(categoryData: CreateCategoryData, token: string) {
@@ -72,10 +73,9 @@ async function createTask(taskData: CreateTaskData, token: string) {
   return baseApi.post("/tasks", taskData, config);
 }
 
-async function getTasksByCategoryId(categoryId: number, token: string) {
+async function getTodayTasksByCategoryId(categoryId: number, token: string) {
   const config = getConfig(token, { categoryId });
-  console.log(config);
-  return baseApi.get<Task[] | null>("/tasks", config);
+  return baseApi.get<Task[] | null>("/tasks/today", config);
 }
 
 export interface Task {
@@ -91,7 +91,7 @@ const api = {
   getCategories,
   createCategory,
   createTask,
-  getTasksByCategoryId,
+  getTodayTasksByCategoryId,
 };
 
 export default api;
