@@ -6,8 +6,8 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 
 import Input from "../../components/Input";
-import AddCategoryDrawer from "../../components/Add/AddCategoryDrawer";
-import SelectCategoryButton from "../../components/Add/SelectCategoryButton";
+import AddCategoryDrawer from "../../components/pages/Add/AddCategoryDrawer";
+import SelectCategoryButton from "../../components/pages/Add/SelectCategoryButton";
 import useAlert from "../../hooks/useAlert";
 import { Category, WeekDay } from "../../services/api";
 import useDays from "../../hooks/api/useWeekDays";
@@ -23,7 +23,7 @@ export default function AddTask() {
     null
   );
   const [open, setOpen] = useState(false);
-  const { weekDays, weekDaysLoading } = useDays();
+  const { weekDays } = useDays();
   const { categories, categoriesLoading, getCategories } = useCategories();
   const { setMessage } = useAlert();
   const { createTask, createTaskLoading } = useCreateTask();
@@ -119,19 +119,18 @@ export default function AddTask() {
             background: "none",
           }}
         >
-          {!weekDaysLoading &&
-            (weekDays as unknown as WeekDay[]).map((day, id) => (
-              <ToggleButton
-                key={id}
-                id={id.toString()}
-                value={day.name[0]}
-                selected={selectedWeekDays.some((d) => d.name === day.name)}
-                onChange={() => handleWeekDaySelection(day)}
-                color="primary"
-              >
-                {day.name[0]}
-              </ToggleButton>
-            ))}
+          {(weekDays as unknown as WeekDay[])?.map((day, id) => (
+            <ToggleButton
+              key={id}
+              id={id.toString()}
+              value={day.name[0]}
+              selected={selectedWeekDays.some((d) => d.name === day.name)}
+              onChange={() => handleWeekDaySelection(day)}
+              color="primary"
+            >
+              {day.name[0]}
+            </ToggleButton>
+          ))}
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -147,14 +146,13 @@ export default function AddTask() {
             background: "none",
           }}
         >
-          {!categoriesLoading &&
-            (categories as unknown as Category[])?.map((category) => (
-              <SelectCategoryButton
-                category={category}
-                selected={category.id === selectedCategory?.id}
-                onClick={handleCategoryClick}
-              />
-            ))}
+          {(categories as unknown as Category[])?.map((category) => (
+            <SelectCategoryButton
+              category={category}
+              selected={category.id === selectedCategory?.id}
+              onClick={handleCategoryClick}
+            />
+          ))}
           <IconButton onClick={() => setOpen(true)} sx={{ p: 0 }}>
             <AddBoxRoundedIcon sx={{ fontSize: "31px", p: 0 }} />
           </IconButton>
