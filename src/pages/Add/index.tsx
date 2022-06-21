@@ -24,7 +24,7 @@ export default function AddTask() {
   );
   const [open, setOpen] = useState(false);
   const { weekDays } = useDays();
-  const { categories, categoriesLoading, getCategories } = useCategories();
+  const { categories, getCategories } = useCategories();
   const { setMessage } = useAlert();
   const { createTask, createTaskLoading } = useCreateTask();
 

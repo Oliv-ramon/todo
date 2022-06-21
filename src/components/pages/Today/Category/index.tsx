@@ -41,6 +41,10 @@ export default function Category({ id, name, icon, color, userId }: Props) {
     setExpanded(true);
   }
 
+  async function reloadTasks() {
+    await getTodayTasksByCategoryId(id);
+  }
+
   return (
     <Paper sx={{ backgroundColor: "#333" }} elevation={4}>
       <Box sx={{ p: "0" }} component="ul">
@@ -66,7 +70,12 @@ export default function Category({ id, name, icon, color, userId }: Props) {
           </CategoryLabel>
           <TasksContainer>
             {tasks?.map((task) => (
-              <Task key={task.id} categoryColor={color} {...task} />
+              <Task
+                key={task.id}
+                categoryColor={color}
+                reloadTasks={reloadTasks}
+                {...task}
+              />
             ))}
           </TasksContainer>
         </Accordion>

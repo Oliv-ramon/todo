@@ -28,11 +28,17 @@ export interface WeekDay {
   name: string;
 }
 
-export interface CreateTaskData {
+export interface Task {
+  id: number;
   name: string;
   weekdays: WeekDay[];
   categoryId: number;
+  checked: boolean;
 }
+
+export type CreateTaskData = Omit<Task, "id">;
+
+export type UpdateTaskData = Partial<CreateTaskData>;
 
 type CreateCategoryData = Omit<Category, "id" | "userId">;
 
@@ -78,10 +84,13 @@ async function getTodayTasksByCategoryId(categoryId: number, token: string) {
   return baseApi.get<Task[] | null>("/tasks/today", config);
 }
 
-export interface Task {
-  id: number;
-  name: string;
-  weekdays: WeekDay[];
+async function updateTask(
+  taskId: number,
+  updateTaskData: UpdateTaskData,
+  token: string
+) {
+  const config = getConfig(token);
+  return baseApi.patch(`/tasks/${taskId}/update`, updateTaskData, config);
 }
 
 const api = {
@@ -92,6 +101,7 @@ const api = {
   createCategory,
   createTask,
   getTodayTasksByCategoryId,
+  updateTask,
 };
 
 export default api;
