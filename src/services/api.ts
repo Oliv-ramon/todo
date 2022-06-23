@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { Dayjs } from "dayjs";
 
 const baseApi = axios.create({
   baseURL: process.env.REACT_APP_API || "http://localhost:5000/",
@@ -6,6 +7,7 @@ const baseApi = axios.create({
 
 interface ConfigParams {
   categoryId?: number;
+  date?: Dayjs;
 }
 
 function getConfig(token: string, params?: ConfigParams): AxiosRequestConfig {
@@ -79,9 +81,9 @@ async function createTask(taskData: CreateTaskData, token: string) {
   return baseApi.post("/tasks", taskData, config);
 }
 
-async function getTodayTasksByCategoryId(categoryId: number, token: string) {
-  const config = getConfig(token, { categoryId });
-  return baseApi.get<Task[] | null>("/tasks/today", config);
+async function getTasks(token: string, date?: Dayjs, categoryId?: number) {
+  const config = getConfig(token, { categoryId, date });
+  return baseApi.get<Task[] | null>("/tasks", config);
 }
 
 async function updateTask(
@@ -98,9 +100,9 @@ const api = {
   signIn,
   getWeekDays,
   getCategories,
+  getTasks,
   createCategory,
   createTask,
-  getTodayTasksByCategoryId,
   updateTask,
 };
 

@@ -148,6 +148,7 @@ export default function AddTask() {
         >
           {(categories as unknown as Category[])?.map((category) => (
             <SelectCategoryButton
+              key={category.id}
               category={category}
               selected={category.id === selectedCategory?.id}
               onClick={handleCategoryClick}

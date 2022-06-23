@@ -12,6 +12,7 @@ export default function MainApp() {
   return (
     <Box
       sx={{
+        height: "100vh",
         padding: "95px 20px 50px 20px",
       }}
     >
