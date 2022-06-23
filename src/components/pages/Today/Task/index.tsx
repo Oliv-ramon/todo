@@ -6,14 +6,20 @@ import { ChangeEvent } from "react";
 import { Task as TaskType } from "../../../../services/api";
 import useUpdateTasks from "../../../../hooks/api/useUpdateTasks";
 
-type Props = TaskType & { categoryColor: string; reloadTasks(): Promise<void> };
+type Props = TaskType & {
+  categoryId?: number;
+  color?: string;
+  reloadTasks?: () => Promise<void>;
+  readonly?: boolean;
+};
 
 export default function Task({
   id,
   name,
-  categoryColor,
+  color,
   checked,
   reloadTasks,
+  readonly,
 }: Props) {
   const { updateTask } = useUpdateTasks();
 
@@ -21,7 +27,7 @@ export default function Task({
     const isChecked = e.target.checked;
 
     await updateTask(id, { checked: isChecked });
-    await reloadTasks();
+    reloadTasks && (await reloadTasks());
   }
 
   return (
@@ -30,14 +36,13 @@ export default function Task({
         onChange={handleChange}
         sx={{
           p: "16px",
-          color: categoryColor,
-          "&.Mui-checked": { color: categoryColor },
+          color,
+          "&.Mui-checked": { color },
         }}
-        icon={<UncheckedIcon sx={{ color: categoryColor, fontSize: "26px" }} />}
-        checkedIcon={
-          <CheckedIcon sx={{ color: categoryColor, fontSize: "26px" }} />
-        }
+        icon={<UncheckedIcon sx={{ color, fontSize: "26px" }} />}
+        checkedIcon={<CheckedIcon sx={{ color, fontSize: "26px" }} />}
         checked={checked}
+        disabled={readonly}
       />
       <Typography>{name}</Typography>
     </Box>

@@ -1,22 +1,23 @@
 import useAsync from "../useAsync";
 import api, { Task } from "../../services/api";
 import useAuth from "../useAuth";
+import { Dayjs } from "dayjs";
 
-export default function useTasks() {
+export default function useTasks(scope: "today" | "date") {
   const { auth } = useAuth();
 
   const {
-    act: getTodayTasksByCategoryId,
+    act: getTasks,
     loading: tasksLoading,
     data: tasks,
   } = useAsync(
-    (categoryId: number) =>
-      api.getTodayTasksByCategoryId(categoryId, auth?.token as string),
+    (date?: Dayjs, categoryId?: number) =>
+      api.getTasks(auth?.token as string, date, categoryId),
     false
   );
 
   return {
-    getTodayTasksByCategoryId,
+    getTasks,
     tasksLoading,
     tasks: tasks as unknown as Task[],
   };

@@ -9,6 +9,7 @@ import MainApp from "./components/MainApp";
 import AddTask from "./pages/Add";
 import theme from "./theme";
 import Today from "./pages/Today";
+import Calendar from "./pages/Calendar";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
               <Route path="/app" element={<MainApp />}>
                 <Route path="/app/today" element={<Today />} />
                 <Route path="/app/add" element={<AddTask />} />
-                <Route path="/app/callendar" element={<h1>callendar</h1>} />
+                <Route path="/app/callendar" element={<Calendar />} />
               </Route>
             </Routes>
           </BrowserRouter>

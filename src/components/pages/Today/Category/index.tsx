@@ -15,6 +15,7 @@ import { getIcon } from "../../../../utils/todayPageUtils";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import useTasks from "../../../../hooks/api/useTasks";
+import dayjs from "dayjs";
 
 interface Props {
   id: number;
@@ -26,7 +27,7 @@ interface Props {
 
 export default function Category({ id, name, icon, color, userId }: Props) {
   const [expanded, setExpanded] = useState<boolean | undefined>(false);
-  const { tasks, tasksLoading, getTodayTasksByCategoryId } = useTasks();
+  const { tasks, tasksLoading, getTasks } = useTasks("today");
   const Icon = getIcon(icon);
 
   async function handleChange(
@@ -37,12 +38,14 @@ export default function Category({ id, name, icon, color, userId }: Props) {
       return setExpanded(false);
     }
 
-    if (tasks === null) await getTodayTasksByCategoryId(id);
+    const today = dayjs();
+    if (tasks === null) await getTasks(today, id);
     setExpanded(true);
   }
 
   async function reloadTasks() {
-    await getTodayTasksByCategoryId(id);
+    const today = dayjs();
+    await getTasks(today, id);
   }
 
   return (
@@ -72,7 +75,7 @@ export default function Category({ id, name, icon, color, userId }: Props) {
             {tasks?.map((task) => (
               <Task
                 key={task.id}
-                categoryColor={color}
+                color={color}
                 reloadTasks={reloadTasks}
                 {...task}
               />
