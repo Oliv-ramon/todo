@@ -107,7 +107,7 @@ export default function AddTask() {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <Typography component="h2" variant="h2">
-          Categorias
+          Categories
         </Typography>
         <Box
           sx={{

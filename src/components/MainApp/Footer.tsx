@@ -18,7 +18,6 @@ export default function Footer() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: "none",
       }}
       elevation={3}
       component="footer"
@@ -41,12 +40,12 @@ export default function Footer() {
         <BottomNavigationAction
           LinkComponent={Link}
           value="add"
-          label="Adicionar"
+          label="Add"
           icon={<AddIcon />}
         />
         <BottomNavigationAction
-          value="callendar"
-          label="Calendário"
+          value="calendar"
+          label="Calendar"
           icon={<CalendarIcon />}
         />
       </BottomNavigation>
