@@ -2,56 +2,51 @@ import { Box } from "@mui/system";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { Typography, SxProps, IconButton } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import styled from "@emotion/styled";
 
 export interface LogoStyles {
   container: SxProps;
   icon: SxProps;
 }
 
+interface ContainerChildProps {
+  isOnDashboard: boolean;
+}
+
 export default function Logo() {
   const location = useLocation();
-  const weAreOnLoginOrSignUp =
-    location.pathname === "/" || location.pathname === "/login";
-  const styles = getDinamicStyles(weAreOnLoginOrSignUp);
+  const isInDashboard =
+    location.pathname !== "/" && location.pathname !== "/login";
 
+  console.log(isInDashboard);
   return (
-    <Box sx={styles.container}>
+    <LogoContainer isOnDashboard={isInDashboard}>
       <IconButton sx={{ p: 0 }}>
-        <CheckCircleRoundedIcon color="primary" sx={styles.icon} />
+        <StyledIcon color="primary" isOnDashboard={isInDashboard} />
       </IconButton>
-      <Typography variant={weAreOnLoginOrSignUp ? "h1" : "h2"} component="h1">
+      <Typography
+        variant={isInDashboard ? "h1" : "h2"}
+        component="h1"
+        sx={isInDashboard ? { fontSize: "24px" } : undefined}
+      >
         TodoIt
       </Typography>
-    </Box>
+    </LogoContainer>
   );
 }
 
-function getDinamicStyles(weAreOnLoginOrSignUp: boolean): LogoStyles {
-  if (weAreOnLoginOrSignUp) {
-    return {
-      container: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: "50px",
-        gap: "10px",
-      },
-      icon: {
-        fontSize: "45px",
-      },
-    };
-  }
+const LogoContainer = styled(Box)`
+  box-sizing: border-box;
+  ${({ isOnDashboard }: ContainerChildProps) =>
+    isOnDashboard ? "padding: 20px 0" : "margin-bottom: 50px"};
 
-  return {
-    container: {
-      padding: "30px 0",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-    },
-    icon: {
-      fontSize: "35px",
-    },
-  };
-}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`;
+
+const StyledIcon = styled(CheckCircleRoundedIcon)`
+  ${({ isOnDashboard }: ContainerChildProps) =>
+    isOnDashboard ? "font-size: 35px" : "font-size: 45px"};
+`;

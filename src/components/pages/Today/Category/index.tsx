@@ -25,13 +25,19 @@ interface Props {
   userId: number;
 }
 
-export default function Category({ id, name, icon, color, userId }: Props) {
+export default function Category({
+  id: categoryId,
+  name,
+  icon,
+  color,
+  userId,
+}: Props) {
   const [expanded, setExpanded] = useState<boolean | undefined>(false);
-  const { tasks, tasksLoading, getTasks } = useTasks("today");
+  const { tasks, tasksLoading, getTasks } = useTasks();
   const Icon = getIcon(icon);
 
   async function handleChange(
-    event: React.SyntheticEvent,
+    _event: React.SyntheticEvent,
     newExpanded: boolean
   ) {
     if (!newExpanded) {
@@ -39,13 +45,13 @@ export default function Category({ id, name, icon, color, userId }: Props) {
     }
 
     const today = dayjs();
-    if (tasks === null) await getTasks(today, id);
+    if (tasks === null) await getTasks(today, categoryId);
     setExpanded(true);
   }
 
   async function reloadTasks() {
     const today = dayjs();
-    await getTasks(today, id);
+    await getTasks(today, categoryId);
   }
 
   return (
@@ -73,12 +79,7 @@ export default function Category({ id, name, icon, color, userId }: Props) {
           </CategoryLabel>
           <TasksContainer>
             {tasks?.map((task) => (
-              <Task
-                key={task.id}
-                color={color}
-                reloadTasks={reloadTasks}
-                {...task}
-              />
+              <Task key={task.id} reloadTasks={reloadTasks} {...task} />
             ))}
           </TasksContainer>
         </Accordion>

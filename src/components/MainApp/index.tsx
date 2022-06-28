@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import Logo from "../Logo";
 import Footer from "./Footer";
 import { Navigate, Outlet } from "react-router-dom";
+import styled from "@emotion/styled";
 
 export default function MainApp() {
   const { auth, logout } = useAuth();
@@ -13,7 +14,7 @@ export default function MainApp() {
     <Box
       sx={{
         height: "100vh",
-        padding: "95px 20px 50px 20px",
+        padding: "75px 20px 50px 20px",
       }}
     >
       <Box
@@ -24,7 +25,6 @@ export default function MainApp() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "inherit",
           backgroundAttachment: "fixed",
           position: "fixed",
           top: 0,
@@ -33,12 +33,19 @@ export default function MainApp() {
         }}
       >
         <Logo />
-        <IconButton>
-          <LogoutIcon sx={{ fontSize: "32px" }} onClick={() => logout()} />
+        <IconButton onClick={() => logout()}>
+          <LogoutIcon sx={{ fontSize: "32px" }} />
         </IconButton>
       </Box>
-      <Outlet />
+      <Container component="main">
+        <Outlet />
+      </Container>
       <Footer />
     </Box>
   );
 }
+
+const Container = styled(Box)`
+  height: calc(100vh - 131px);
+  overflow: scroll;
+`;

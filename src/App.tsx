@@ -24,7 +24,7 @@ function App() {
               <Route path="/app" element={<MainApp />}>
                 <Route path="/app/today" element={<Today />} />
                 <Route path="/app/add" element={<AddTask />} />
-                <Route path="/app/callendar" element={<Calendar />} />
+                <Route path="/app/calendar" element={<Calendar />} />
               </Route>
             </Routes>
           </BrowserRouter>

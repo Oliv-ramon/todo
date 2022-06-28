@@ -17,7 +17,7 @@ import Task from "../../components/pages/Today/Task";
 export default function Calendar() {
   const [value, setValue] = useState<Dayjs | null>(dayjs());
   const [open, setOpen] = useState<boolean>(false);
-  const { tasks, getTasks } = useTasks("date");
+  const { tasks, getTasks } = useTasks();
 
   async function handleChange(newValue: Dayjs | null) {
     setValue(newValue);
@@ -37,7 +37,7 @@ export default function Calendar() {
             date={value}
             onChange={handleChange}
             views={["day", "month", "year"]}
-            renderDay={(day, selectedDays, pickersDayProps) => (
+            renderDay={(_day, _selectedDays, pickersDayProps) => (
               <StyledPickersDay
                 dayIsBetween={false}
                 isFirstDay={false}
@@ -50,14 +50,11 @@ export default function Calendar() {
       </LocalizationProvider>
       <Modal component="div" open={open} onClose={handleToggleModal}>
         <ModalContainer elevation={12}>
-          {tasks?.map((task) => (
-            <Task
-              key={task.id}
-              readonly={true}
-              {...task}
-              color="primary.main"
-            />
-          ))}
+          {tasks?.length > 0
+            ? tasks.map((task) => (
+                <Task key={task.id} readonly={true} {...task} />
+              ))
+            : "No tasks that day"}
         </ModalContainer>
       </Modal>
     </Container>
@@ -91,11 +88,20 @@ const StyledPickersDay = styled(PickersDay)`
 ` as React.ComponentType<CustomPickerDayProps>;
 
 const ModalContainer = styled(Paper)`
+  width: 90%;
+  min-height: 100px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #333;
+
   position: absolute;
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
-  width: 90%;
-  background-color: #333;
-  padding: 10px;
 `;

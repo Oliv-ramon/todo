@@ -1,4 +1,4 @@
-import { Box, IconButton, ToggleButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -10,38 +10,26 @@ import AddCategoryDrawer from "../../components/pages/Add/AddCategoryDrawer";
 import SelectCategoryButton from "../../components/pages/Add/SelectCategoryButton";
 import useAlert from "../../hooks/useAlert";
 import { Category, WeekDay } from "../../services/api";
-import useDays from "../../hooks/api/useWeekDays";
 import useCategories from "../../hooks/api/useCategories";
 import { Alert, StyledButton } from "../../components";
 import useCreateTask from "../../hooks/api/useCreateTask";
 import { mapCreateTaskErrorMessages } from "../../utils/alertUtils";
+import Repetition from "../../components/pages/Add/Repetition";
 
 export default function AddTask() {
   const [taskName, setTaskName] = useState("");
   const [selectedWeekDays, setSelectedWeekDays] = useState<WeekDay[] | []>([]);
+  const [times, setTimes] = useState<string>("1");
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
   const [open, setOpen] = useState(false);
-  const { weekDays } = useDays();
   const { categories, getCategories } = useCategories();
   const { setMessage } = useAlert();
   const { createTask, createTaskLoading } = useCreateTask();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setTaskName(e.target.value);
-  }
-
-  function handleWeekDaySelection(day: WeekDay) {
-    const dayIsSelected = selectedWeekDays.some((d) => d.name === day.name);
-
-    if (dayIsSelected) {
-      setSelectedWeekDays([
-        ...selectedWeekDays.filter((d) => d.name !== day.name),
-      ]);
-    } else {
-      setSelectedWeekDays([...selectedWeekDays, day]);
-    }
   }
 
   function handleCategoryClick(category: Category) {
@@ -66,7 +54,8 @@ export default function AddTask() {
       const taskData = {
         name: taskName,
         categoryId: selectedCategory?.id,
-        days: selectedWeekDays,
+        weekDays: selectedWeekDays,
+        times,
       };
       await createTask(taskData);
       setMessage({
@@ -97,7 +86,7 @@ export default function AddTask() {
     >
       <Alert />
       <Typography component="h2" variant="h2">
-        Crie uma nova tarefa!
+        Create a new task!
       </Typography>
       <Input
         name="name"
@@ -109,33 +98,16 @@ export default function AddTask() {
         onChange={handleChange}
       />
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-        <Typography component="h2" variant="h2">
-          Repetir
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            background: "none",
-          }}
-        >
-          {(weekDays as unknown as WeekDay[])?.map((day, id) => (
-            <ToggleButton
-              key={id}
-              id={id.toString()}
-              value={day.name[0]}
-              selected={selectedWeekDays.some((d) => d.name === day.name)}
-              onChange={() => handleWeekDaySelection(day)}
-              color="primary"
-            >
-              {day.name[0]}
-            </ToggleButton>
-          ))}
-        </Box>
+        <Repetition
+          selectedWeekDays={selectedWeekDays}
+          setSelectedWeekDays={setSelectedWeekDays}
+          times={times}
+          setTimes={setTimes}
+        />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <Typography component="h2" variant="h2">
-          Categorias
+          Categories
         </Typography>
         <Box
           sx={{
@@ -167,10 +139,10 @@ export default function AddTask() {
       </Box>
       <StyledButton
         loading={createTaskLoading}
-        loadingText="Criando"
+        loadingText="CREATING"
         fields={{ taskName, selectedCategory, selectedWeekDays }}
       >
-        Criar
+        CREATE TASK
       </StyledButton>
     </Box>
   );
