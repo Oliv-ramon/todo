@@ -3,7 +3,7 @@ import api, { Task } from "../../services/api";
 import useAuth from "../useAuth";
 import { Dayjs } from "dayjs";
 
-export default function useTasks(scope: "today" | "date") {
+export default function useTasks() {
   const { auth } = useAuth();
 
   const {

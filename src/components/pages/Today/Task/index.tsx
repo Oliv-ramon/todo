@@ -4,11 +4,9 @@ import { Box, Checkbox, Typography } from "@mui/material";
 import { ChangeEvent } from "react";
 
 import { Task as TaskType } from "../../../../services/api";
-import useUpdateTasks from "../../../../hooks/api/useUpdateTasks";
+import useCheckTask from "../../../../hooks/api/useCheckTask";
 
 type Props = TaskType & {
-  categoryId?: number;
-  color?: string;
   reloadTasks?: () => Promise<void>;
   readonly?: boolean;
 };
@@ -16,22 +14,20 @@ type Props = TaskType & {
 export default function Task({
   id,
   name,
-  color,
-  checked,
+  category: { color },
+  events: [{ id: eventId, checked }],
   reloadTasks,
   readonly,
 }: Props) {
-  const { updateTask } = useUpdateTasks();
+  const { check } = useCheckTask();
 
   async function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const isChecked = e.target.checked;
-
-    await updateTask(id, { checked: isChecked });
+    await check(eventId);
     reloadTasks && (await reloadTasks());
   }
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
       <Checkbox
         onChange={handleChange}
         sx={{

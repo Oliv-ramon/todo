@@ -30,12 +30,20 @@ export interface WeekDay {
   name: string;
 }
 
+export interface Event {
+  id: number;
+  checked: boolean;
+}
+
 export interface Task {
   id: number;
   name: string;
   weekdays: WeekDay[];
   categoryId: number;
-  checked: boolean;
+  events: Event[];
+  category: {
+    color: string;
+  };
 }
 
 export type CreateTaskData = Omit<Task, "id">;
@@ -71,7 +79,6 @@ async function getCategories(token: string, scope?: "today") {
 }
 
 async function createCategory(categoryData: CreateCategoryData, token: string) {
-  console.log("aqui");
   const config = getConfig(token);
   return baseApi.post("/categories", categoryData, config);
 }
@@ -95,6 +102,11 @@ async function updateTask(
   return baseApi.patch(`/tasks/${taskId}/update`, updateTaskData, config);
 }
 
+async function checkTask(eventId: number, token: string) {
+  const config = getConfig(token);
+  return baseApi.post(`/events/${eventId}/check`, {}, config);
+}
+
 const api = {
   signUp,
   signIn,
@@ -104,6 +116,7 @@ const api = {
   createCategory,
   createTask,
   updateTask,
+  checkTask,
 };
 
 export default api;

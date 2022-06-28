@@ -180,10 +180,10 @@ export default function AddCategoryDrawer({
         </Box>
         <StyledButton
           loading={loading}
-          loadingText="Criando..."
+          loadingText="CREATING..."
           fields={categoryData}
         >
-          Criar
+          CREATE CATEGORY
         </StyledButton>
       </Box>
     </MUIDrawer>
