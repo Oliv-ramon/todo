@@ -82,7 +82,7 @@ export default function Repetition({
           }}
         >
           {getTimes().map((t) => (
-            <StyledMenuItem theme={theme} value={t.value}>
+            <StyledMenuItem key={t.value} theme={theme} value={t.value}>
               {t.text}
             </StyledMenuItem>
           ))}

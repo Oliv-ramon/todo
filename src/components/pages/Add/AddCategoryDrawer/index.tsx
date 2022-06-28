@@ -197,7 +197,6 @@ interface AddCategoryDrawaerStyles {
 
 const styles: AddCategoryDrawaerStyles = {
   form: {
-    height: "96vh",
     p: "40px 20px",
     borderRadius: "10px 10px 0 0",
     display: "flex",

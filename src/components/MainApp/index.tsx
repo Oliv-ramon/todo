@@ -33,8 +33,8 @@ export default function MainApp() {
         }}
       >
         <Logo />
-        <IconButton>
-          <LogoutIcon sx={{ fontSize: "32px" }} onClick={() => logout()} />
+        <IconButton onClick={() => logout()}>
+          <LogoutIcon sx={{ fontSize: "32px" }} />
         </IconButton>
       </Box>
       <Container component="main">
